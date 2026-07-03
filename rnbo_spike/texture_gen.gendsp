@@ -1,0 +1,99 @@
+{
+ "patcher": {
+  "fileversion": 1,
+  "appversion": {
+   "major": 8,
+   "minor": 0,
+   "revision": 0,
+   "architecture": "x64",
+   "modernui": 1
+  },
+  "rect": [
+   80.0,
+   80.0,
+   760.0,
+   520.0
+  ],
+  "boxes": [
+   {
+    "box": {
+     "id": "in1",
+     "maxclass": "newobj",
+     "numinlets": 0,
+     "numoutlets": 1,
+     "outlettype": [
+      ""
+     ],
+     "patching_rect": [
+      40.0,
+      40.0,
+      40.0,
+      22.0
+     ],
+     "text": "in 1"
+    }
+   },
+   {
+    "box": {
+     "id": "cb",
+     "maxclass": "codebox",
+     "numinlets": 1,
+     "numoutlets": 1,
+     "outlettype": [
+      ""
+     ],
+     "fontname": "Menlo",
+     "fontsize": 11.0,
+     "patching_rect": [
+      40.0,
+      90.0,
+      560.0,
+      360.0
+     ],
+     "code": "// mc TEXTURES - RNBO spike: 12-tap distribution-driven feedback delay (gen~)\n// Validates: gen Delay multi-tap + History feedback + distribution math from params.\nParam mode(6);     // 1 exp, 2 scaledexp, 3 increment, 4 harmonic, 5 subharmonic, 6 spread\nParam A(1);\nParam B(6);\nParam basems(150);\nParam fbk(0.5);\nParam lopass(6000);\n\nDelay buf(96000);          // ~2s @ 48k, shared buffer (= mc.tapin~)\nHistory fbstate(0);\nHistory lpstate(0);\n\nfb = fbstate;\nbuf.write(in1 + fb * fbk); // write input + lowpassed feedback\n\nsum = 0;\nfor (i = 0; i < 12; i += 1) {           // fixed N, unrolls -> 12 read taps\n\tfrac = i / 11;\n\tratio = 1;\n\tif (mode == 1)      { ratio = pow(B, A * i); }       // exponential\n\telse if (mode == 2) { ratio = pow(B, A * i / 12); }  // scaledexponential\n\telse if (mode == 3) { ratio = B + A * i; }           // increment\n\telse if (mode == 4) { ratio = B * (i + 1) * A; }     // harmonic\n\telse if (mode == 5) { ratio = B / (i + 1) * A; }     // subharmonic\n\telse                { ratio = A + (B - A) * frac; }  // spread (default)\n\tdsamp = ratio * basems * samplerate * 0.001;\n\tdsamp = clamp(dsamp, 1, 95000);\n\tsum += buf.read(dsamp);\n}\nsum = sum / 12;\n\ncoef = clamp(lopass / samplerate, 0, 0.5);   // crude one-pole feedback lopass\nlpstate = lpstate + coef * (sum - lpstate);\nfbstate = lpstate;\n\nout1 = clamp(sum, -1, 1);\n"
+    }
+   },
+   {
+    "box": {
+     "id": "out1",
+     "maxclass": "newobj",
+     "numinlets": 1,
+     "numoutlets": 0,
+     "patching_rect": [
+      40.0,
+      470.0,
+      40.0,
+      22.0
+     ],
+     "text": "out 1"
+    }
+   }
+  ],
+  "lines": [
+   {
+    "patchline": {
+     "source": [
+      "in1",
+      0
+     ],
+     "destination": [
+      "cb",
+      0
+     ]
+    }
+   },
+   {
+    "patchline": {
+     "source": [
+      "cb",
+      0
+     ],
+     "destination": [
+      "out1",
+      0
+     ]
+    }
+   }
+  ]
+ }
+}

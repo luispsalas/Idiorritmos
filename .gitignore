@@ -1,0 +1,8 @@
+.DS_Store
+*.maxsnap
+*.component
+*.vst3
+build/
+exports/
+audio/*.wav
+audio/*.aif

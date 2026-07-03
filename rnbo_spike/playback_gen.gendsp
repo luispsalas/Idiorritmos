@@ -1,0 +1,115 @@
+{
+ "patcher": {
+  "fileversion": 1,
+  "appversion": {
+   "major": 8,
+   "minor": 0,
+   "revision": 0,
+   "architecture": "x64",
+   "modernui": 1
+  },
+  "rect": [
+   80,
+   80,
+   880,
+   720
+  ],
+  "boxes": [
+   {
+    "box": {
+     "id": "clipbuf",
+     "maxclass": "newobj",
+     "numinlets": 0,
+     "numoutlets": 0,
+     "outlettype": [],
+     "patching_rect": [
+      640,
+      20,
+      100,
+      22
+     ],
+     "text": "buffer clip"
+    }
+   },
+   {
+    "box": {
+     "id": "cb",
+     "maxclass": "codebox",
+     "numinlets": 1,
+     "numoutlets": 2,
+     "outlettype": [
+      "",
+      ""
+     ],
+     "fontname": "Menlo",
+     "fontsize": 11.0,
+     "patching_rect": [
+      40,
+      60,
+      780,
+      560
+     ],
+     "code": "// mc TEXTURES G2 - playback front-end (gen multi-voice buffer player)\n// 16 voices read one buffer~ (\"clip\") at per-voice distributed speeds = the multi-speed cloud\n// from a single recording (Haiku approach). Distribution math identical to the texture engine.\n// play/restart/reroll/panic, per-voice pan spread + width, click-free fades. RNBO-native gen.\n// NOTE: relies on gen 'buffer' read (peek/dim) exporting via RNBO; fallback = unrolled groove~.\nParam globalspeed(1, min=0.25, max=4);  // master rate multiplier\nParam mode(6, min=1, max=7);            // 1 exp 2 scaledexp 3 increment 4 harmonic 5 subharm 6 spread 7 deviate\nParam spdA(0.9, min=-8, max=8);         // distribution arg A\nParam spdB(1.4, min=0, max=16);         // distribution arg B\nParam width(1, min=0, max=1);           // stereo spread of voices\nParam play(1, min=0, max=1);            // 1 = run, 0 = stop (phase frozen)\nParam restart(0, min=0, max=1);         // edge 0->1 = re-align all voices to start\nParam reroll(0, min=0, max=1);          // edge 0->1 = refill deviate held-random\nParam panic(0, min=0, max=1);           // 1 = stop + silence (click-free)\n\n// 'clip' is a separate gen [buffer clip] object box (references buffer~ \"clip\"); codebox reads it by name.\nData ph(16);                            // per-voice read phase (samples)\nData dev(16);                           // held random, speed deviate\nHistory rrprev(0);\nHistory rsprev(0);\nHistory mgain(1);                       // smoothed output gain (click-free)\n\nhalfpi = 1.57079632679;\nlen = dim(clip);                        // buffer length in samples\n\n// reroll edge -> refill held-random table\nif (reroll > rrprev) { for (k = 0; k < 16; k += 1) { dev.poke(noise(), k); } }\nrrprev = reroll;\n\n// restart edge -> reset all voice phases to 0\nif (restart > rsprev) { for (k = 0; k < 16; k += 1) { ph.poke(0, k); } }\nrsprev = restart;\n\nplaying = (play > 0.5) && (panic < 0.5);\n\nsumL = 0;\nsumR = 0;\nif (len > 1) {\n\tfor (v = 0; v < 16; v += 1) {\n\t\tfrac = v / 15;\n\n\t\t// --- per-voice speed ratio by mode ---\n\t\tratio = 1;\n\t\tif (mode == 1)      { ratio = pow(spdB, spdA * v); }\n\t\telse if (mode == 2) { ratio = pow(spdB, spdA * v / 12); }\n\t\telse if (mode == 3) { ratio = spdB + spdA * v; }\n\t\telse if (mode == 4) { ratio = spdB * (v + 1) * spdA; }\n\t\telse if (mode == 5) { ratio = spdB / (v + 1) * spdA; }\n\t\telse if (mode == 7) { ratio = spdB + dev.peek(v) * spdA; }\n\t\telse                { ratio = spdA + (spdB - spdA) * frac; }\n\n\t\tinc = globalspeed * ratio;          // samples advanced per output sample\n\t\tadv = playing ? inc : 0;            // freeze phase when stopped/panic\n\n\t\tp = ph.peek(v) + adv;\n\t\tp = p - len * floor(p / len);       // wrap into [0, len) (handles +/-)\n\t\tph.poke(p, v);\n\n\t\t// linear-interp read (channel 0)\n\t\ti0 = floor(p);\n\t\tfr = p - i0;\n\t\ti1 = (i0 + 1 >= len) ? 0 : i0 + 1;\n\t\ts = peek(clip, i0, 0) * (1 - fr) + peek(clip, i1, 0) * fr;\n\n\t\t// per-voice pan spread + width\n\t\tpan = 0.5 + (frac - 0.5) * clamp(width, 0, 1);\n\t\tsumL += s * cos(pan * halfpi);\n\t\tsumR += s * sin(pan * halfpi);\n\t}\n}\nsumL = sumL * 0.0625;   // /16\nsumR = sumR * 0.0625;\n\n// click-free output gain: fade to 0 when stopped or panic\nmtarget = playing ? 1 : 0;\nmgain = mgain + (mtarget - mgain) * 0.002;   // ~10 ms ramp @ 48k\nout1 = sumL * mgain;\nout2 = sumR * mgain;\n"
+    }
+   },
+   {
+    "box": {
+     "id": "out1",
+     "maxclass": "newobj",
+     "numinlets": 1,
+     "numoutlets": 0,
+     "outlettype": [],
+     "patching_rect": [
+      40,
+      640,
+      40,
+      22
+     ],
+     "text": "out 1"
+    }
+   },
+   {
+    "box": {
+     "id": "out2",
+     "maxclass": "newobj",
+     "numinlets": 1,
+     "numoutlets": 0,
+     "outlettype": [],
+     "patching_rect": [
+      100,
+      640,
+      40,
+      22
+     ],
+     "text": "out 2"
+    }
+   }
+  ],
+  "lines": [
+   {
+    "patchline": {
+     "source": [
+      "cb",
+      0
+     ],
+     "destination": [
+      "out1",
+      0
+     ]
+    }
+   },
+   {
+    "patchline": {
+     "source": [
+      "cb",
+      1
+     ],
+     "destination": [
+      "out2",
+      0
+     ]
+    }
+   }
+  ]
+ }
+}
