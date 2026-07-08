@@ -1,25 +1,25 @@
-# IDIORHYTHM
+# IDIORRITMOS
 
 **An idiorhythmic texturizer — everlasting layers of sound, chopped by human rhythm.**
 
-IDIORHYTHM is a stereo texture processor for your DAW (AU / VST3), built in Max/MSP `gen~` and exported with RNBO. It turns any input — a synth pad, a guitar, a voice, a field recording — into sustained, evolving beds of sound, and then lets you carve those beds rhythmically: frozen textures, grid-locked stutters, tempo-synced chops, and slow autonomous drift.
+IDIORRITMOS is a stereo texture processor for your DAW (AU / VST3), built in Max/MSP `gen~` and exported with RNBO. It turns any input — a synth pad, a guitar, a voice, a field recording — into sustained, evolving beds of sound, and then lets you carve those beds rhythmically: frozen textures, grid-locked stutters, tempo-synced chops, and slow autonomous drift.
 
-> **Status: pre-release.** Engine v1.3 is feature-complete and verified by ear; DAW validation (Ableton Live, Logic Pro) and the first plugin release are in progress. The final goal of this repository is to offer IDIORHYTHM as open source.
+> **Status: pre-release.** Engine v1.3 is feature-complete and verified by ear; DAW validation (Ableton Live, Logic Pro) and the first plugin release are in progress. The final goal of this repository is to offer IDIORRITMOS as open source.
 
 ---
 
 ## The concept
 
-IDIORHYTHM grows out of *Prácticas Idiorítmicas* (Salas, 2021), a sound-art research project on how we perceive, interpret, and modulate rhythmic events in everyday life. Its core insight: **rhythm is not just timing — it reveals behavior, intention, and emotion.** The way someone washes dishes, walks, or speaks carries a rhythmic signature you can hear.
+IDIORRITMOS grows out of *Prácticas Idiorítmicas* (Salas, 2021), a sound-art research project on how we perceive, interpret, and modulate rhythmic events in everyday life. Its core insight: **rhythm is not just timing — it reveals behavior, intention, and emotion.** The way someone washes dishes, walks, or speaks carries a rhythmic signature you can hear.
 
-The plugin translates that idea into four **cause-human rhythmic personas**, which organize its presets and its future interface:
+The plugin translates that idea into four **cause-human rhythmic personas** — named as gerunds, because each is an *action*, a way of moving through time. They organize its presets and its future interface:
 
 | Persona | Rhythmic behavior | In the plugin |
 |---|---|---|
-| **The Drummer** | Metronomic, grid-aligned, predictable | Tempo-locked gate, quantized freeze, marching tap spacing |
-| **The Dancer** | Embodied continuous flow | Voice clouds, smooth sway, slow breathing drift, endless sustain |
-| **The Talker** | Speech phrasing — irregular, expressive | Rubato tap clusters, stepped sample-and-hold motion, scattered placement |
-| **The Skater** | Momentum, then the cut | Long glides, morph toward glitch, short freeze windows, grit |
+| **Percutiendo** *(drumming)* | Metronomic, grid-aligned, predictable | Tempo-locked gate, quantized freeze, marching tap spacing |
+| **Bailando** *(dancing)* | Embodied continuous flow | Voice clouds, smooth sway, slow breathing drift, endless sustain |
+| **Hablando** *(talking)* | Speech phrasing — irregular, expressive | Rubato tap clusters, stepped sample-and-hold motion, scattered placement |
+| **Patinando** *(skating)* | Momentum, then the cut | Long glides, morph toward glitch, short freeze windows, grit |
 
 Even the parameter vocabulary is rhythmic: taps are **Pulses**, their spacing is the **Stride**, their distribution curve is the **Gait** (Rush, March, Divide, Multiply, Even, Rubato…), the per-pulse motion is **Sway**, the texture's own slow drift is its **Breath**, and the rhythmic gate is the **Chop**.
 
@@ -33,15 +33,15 @@ Even the parameter vocabulary is rhythmic: taps are **Pulses**, their spacing is
 - **Host-grid phase lock** — gate, modulation, and freeze can align to your DAW's beat grid, with launch-quantized freeze commits. Per-domain sync toggles let, say, the pulses float free in milliseconds while the chop stays on the grid.
 - **Performance macros** — Morph (one knob from texture to glitch), rhythmic gate with depth and duty, bit-crush and downsampling on the wet path only, re-roll for all random tables, and a click-free panic.
 - **Evolve** — two incommensurate slow phases drift the pulse distribution so the texture breathes on its own.
-- 48 host-automatable parameters, NaN/Inf-hardened DSP, soft-limited output.
+- 47 host-automatable parameters, NaN/Inf-hardened DSP, soft-limited output.
 
 ## Factory bank
 
 Two tiers, eight presets:
 
-**Personas** — canonical definitions of each rhythmic behavior: *The Drummer*, *The Dancer*, *The Talker*, *The Skater*.
+**Personas** — canonical definitions of each rhythmic behavior: *Percutiendo*, *Bailando*, *Hablando*, *Patinando*.
 
-**Scenes** — persona hybrids: *Murmur* (Dancer × Talker — a granular murmur of speech-like voices), *Stutter Step* (Drummer × Skater — the signature grid-locked freeze-stutter), *Pavement* (Skater × Talker — dark lo-fi grit), *Vigil* (deep Dancer — a near-motionless eternal bed).
+**Scenes** — persona hybrids: *Murmur* (Bailando × Hablando — a granular murmur of speech-like voices), *Stutter Step* (Percutiendo × Patinando — the signature grid-locked freeze-stutter), *Pavement* (Patinando × Hablando — dark lo-fi grit), *Vigil* (deep Bailando — a near-motionless eternal bed).
 
 ## Use cases
 
@@ -99,4 +99,4 @@ Requirements: **Max 9.1+** with **RNBO 1.4+** (license required to export), Xcod
 
 ## License
 
-Not yet licensed — this repository is private during pre-release. The intent is to publish IDIORHYTHM under an open-source license at release (candidates under evaluation; note that RNBO-exported C++ is subject to Cycling '74's RNBO license terms, which permit distributing compiled plugins and released source under their conditions).
+Not yet licensed — this repository is private during pre-release. The intent is to publish IDIORRITMOS under an open-source license at release (candidates under evaluation; note that RNBO-exported C++ is subject to Cycling '74's RNBO license terms, which permit distributing compiled plugins and released source under their conditions).

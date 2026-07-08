@@ -3724,7 +3724,7 @@
       600,
       18
      ],
-     "text": "SCENES \u2014 persona hybrids (click a row = full state, fully resets). Pure PERSONAS row further down = the four canonical archetypes."
+     "text": "SCENES - persona hybrids (click a row = full state, fully resets). Pure PERSONAS row further down = the four canonical archetypes (Percutiendo / Bailando / Hablando / Patinando)."
     }
    },
    {
@@ -3739,7 +3739,7 @@
       150,
       18
      ],
-     "text": "S1 \u00b7 MURMUR  (Dancer \u00d7 Talker)"
+     "text": "S1 \u00b7 MURMUR  (Bailando \u00d7 Hablando)"
     }
    },
    {
@@ -3772,7 +3772,7 @@
       150,
       18
      ],
-     "text": "S2 \u00b7 STUTTER STEP  (Drummer \u00d7 Skater)"
+     "text": "S2 \u00b7 STUTTER STEP  (Percutiendo \u00d7 Patinando)"
     }
    },
    {
@@ -3805,7 +3805,7 @@
       150,
       18
      ],
-     "text": "S3 \u00b7 PAVEMENT  (Skater \u00d7 Talker)"
+     "text": "S3 \u00b7 PAVEMENT  (Patinando \u00d7 Hablando)"
     }
    },
    {
@@ -3838,7 +3838,7 @@
       150,
       18
      ],
-     "text": "S4 \u00b7 VIGIL  (deep Dancer)"
+     "text": "S4 \u00b7 VIGIL  (deep Bailando)"
     }
    },
    {
@@ -4177,7 +4177,7 @@
       900,
       18
      ],
-     "text": "ARCHETYPES \u2014 Phase A audition (full states, like presets). Drummer: try FREEZE for quantized stutter. Skater: FREEZE = the cut. Talker: hit reroll = new utterance."
+     "text": "PERSONAS - Phase A audition (full states, like presets). Percutiendo: try FREEZE for quantized stutter. Patinando: FREEZE = the cut. Hablando: hit reroll = new utterance."
     }
    },
    {
@@ -4210,7 +4210,7 @@
       150,
       20
      ],
-     "text": "THE DRUMMER"
+     "text": "PERCUTIENDO"
     }
    },
    {
@@ -4243,7 +4243,7 @@
       150,
       20
      ],
-     "text": "THE DANCER"
+     "text": "BAILANDO"
     }
    },
    {
@@ -4276,7 +4276,7 @@
       150,
       20
      ],
-     "text": "THE TALKER"
+     "text": "HABLANDO"
     }
    },
    {
@@ -4309,7 +4309,7 @@
       150,
       20
      ],
-     "text": "THE SKATER"
+     "text": "PATINANDO"
     }
    }
   ],

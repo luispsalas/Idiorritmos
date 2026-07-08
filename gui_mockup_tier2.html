@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>IDIORHYTHM — Tier-2 GUI mockup (JUCE spec · rhythm semantics)</title>
+<title>IDIORRITMOS — Tier-2 GUI mockup (JUCE spec · rhythm semantics)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 :root{
@@ -103,6 +103,17 @@ body[data-arch=skater]  .ctl[data-arch~=skater], body[data-arch=skater]  .tglrow
 /* ---------- footer ---------- */
 .foot{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .foot .ctl{flex:1;min-width:150px;margin:0}
+.knobwrap{display:flex;flex-direction:column;align-items:center;gap:2px}
+.knob{width:46px;height:46px;border-radius:50%;border:2px solid var(--border-strong);background:var(--surface-2);position:relative;cursor:ns-resize;touch-action:none;user-select:none}
+.knob .kp{position:absolute;left:50%;top:3px;width:3px;height:15px;margin-left:-1.5px;background:var(--text-primary);border-radius:2px;transform-origin:50% 20px}
+.kv{font-family:var(--font-mono);font-size:9.5px;color:var(--text-muted)}
+.gaithint{display:none;font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.4;margin-top:2px;min-height:22px}
+body.showids .gaithint{display:block}
+.chp{width:100%;height:46px;border-radius:10px;border:2px solid var(--meter2);background:var(--surface-2);color:var(--meter2);font-size:13px;font-weight:800;letter-spacing:2px;cursor:pointer}
+@media (prefers-color-scheme: dark){.chp{color:var(--meter1);border-color:var(--meter1)}}
+.chp.on{background:var(--meter1);color:var(--meter2);border-color:var(--meter2)}
+.chp em{display:none;font-style:normal;font-family:var(--font-mono);font-size:9px;font-weight:400;opacity:.75;letter-spacing:0}
+body.showids .chp em{display:inline}
 .fbtn{background:var(--surface-2);border:1px solid var(--border-strong);border-radius:6px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;color:var(--text-primary)}
 .vu{display:flex;gap:2px;align-items:flex-end;height:22px}
 .vu span{width:5px;background:var(--brth1);border-radius:2px;animation:vu 1s ease-in-out infinite alternate}
@@ -113,21 +124,21 @@ p.note{max-width:1080px;margin:14px auto 0;font-size:10px;color:var(--text-muted
 </style>
 </head>
 <body>
-<h1>IDIORHYTHM — Tier-2 GUI (JUCE) design mockup</h1>
+<h1>IDIORRITMOS — Tier-2 GUI (JUCE) design mockup</h1>
 <p class="sub">J5 layout · J6 rhythm-semantic labels · binds param set v1.3 (48 IDs, unchanged) · hover/click an archetype to trace its controls</p>
 
 <div id="app">
 
 <!-- HEADER -->
 <div class="bar">
- <span class="logo">IDIORHYTHM <small>· mc TEXTURES engine</small></span>
+ <span class="logo">IDIORRITMOS <small>· mc TEXTURES engine</small></span>
  <select title="Factory bank: 4 pure personas + 4 persona-hybrid scenes (RNBO snapshots)">
   <optgroup label="Personas">
-   <option>The Drummer</option><option>The Dancer</option><option>The Talker</option><option>The Skater</option>
+   <option>Percutiendo</option><option>Bailando</option><option>Hablando</option><option>Patinando</option>
   </optgroup>
   <optgroup label="Scenes">
-   <option>Murmur · Dancer×Talker</option><option>Stutter Step · Drummer×Skater</option>
-   <option>Pavement · Skater×Talker</option><option>Vigil · deep Dancer</option>
+   <option>Murmur · Bailando×Hablando</option><option>Stutter Step · Percutiendo×Patinando</option>
+   <option>Pavement · Patinando×Hablando</option><option>Vigil · Bailando profundo</option>
   </optgroup>
  </select>
  <span class="tglrow" data-arch="drummer"><input type="checkbox" checked id="sync">
@@ -139,9 +150,25 @@ p.note{max-width:1080px;margin:14px auto 0;font-size:10px;color:var(--text-muted
  <button class="panicbtn" title="panic — fast fade + buffer flush (utility, not performance)">PANIC</button>
 </div>
 
+<!-- UTILITY BAR (top row 2: global actions + master levels + meter) -->
+<div class="bar foot">
+ <button class="fbtn" data-arch="talker" title="re-rolls all three random-held tables: taps + pan + cloud speeds">⚄ RE-ROLL</button>
+ <button class="fbtn" title="clear — reset params to baseline (audio keeps running)">RESET</button>
+ <div class="knobwrap" title="dry source ↔ full texture">
+  <span class="lb">Mix <em>mix</em></span>
+  <div class="knob" data-val="0" data-max="100"><div class="kp"></div></div><span class="kv"></span>
+ </div>
+ <div class="knobwrap" title="master output, pre soft-limiter (100% = unity)">
+  <span class="lb">Output <em>outgain</em></span>
+  <div class="knob" data-val="100" data-max="200"><div class="kp"></div></div><span class="kv"></span>
+ </div>
+ <div class="vu"><span></span><span></span><span></span></div>
+ <label class="idtgl" title="reveals each control's internal parameter ID and the per-Gait math (what A and B do in the selected mode)"><input type="checkbox" id="ids"> ⓘ DETAILS — what each knob controls (IDs &amp; Gait formulas)</label>
+</div>
+
 <!-- VOCABULARY -->
 <div id="vocab">
- <b>PULSE</b> a sounding tap · <b>STRIDE</b> spacing between pulses · <b>GAIT</b> how steps distribute (one engine, four places)
+ <b>PULSE</b> a sounding tap · <b>STRIDE</b> spacing between pulses · <b>GAIT</b> how steps distribute — one engine, four places; each step i gets a ratio × the base (formula under each menu)
  · <b>SWAY</b> per-pulse motion · <b>BREATH</b> the texture’s own drift · <b>CHOP</b> the rhythmic gate · <b>WASH</b> in-loop diffusion · <b>EVERLAST</b> regeneration
 </div>
 
@@ -162,7 +189,7 @@ p.note{max-width:1080px;margin:14px auto 0;font-size:10px;color:var(--text-muted
   <input type="range" min="0" max="100" value="0">
  </div>
  <div class="sep"></div>
- <div class="tglrow" data-arch="drummer"><input type="checkbox" id="chop"><label for="chop">CHOP <em>gateon</em></label></div>
+ <button class="chp" id="chop" data-arch="drummer" title="rhythmic amplitude gate — the chop tool; always beat-relative">CHOP <em>gateon</em></button>
  <div class="ctl" data-arch="drummer">
   <span class="lb">Chop Rate <em>gatediv</em></span>
   <select><option>1/32</option><option selected>1/16</option><option>1/8</option><option>1/4</option><option>1/2</option></select>
@@ -175,78 +202,6 @@ p.note{max-width:1080px;margin:14px auto 0;font-size:10px;color:var(--text-muted
 
 <!-- ENGINE -->
 <div id="engine">
-
- <div class="panel" data-arch="dancer">
-  <h3><span class="dot" style="background:var(--brth1)"></span>VOICES <small>capture cloud</small></h3>
-  <div class="ctl" data-arch="dancer"><span class="lb">Cloud <em>cloud</em><span class="hint">input ↔ 16 voices</span></span><input type="range" min="0" max="100" value="0"></div>
-  <div class="ctl" data-arch="dancer skater"><span class="lb">Cloud Speed <em>playspeed</em></span><input type="range" min="25" max="400" value="100"></div>
-  <div class="ctl" data-arch="talker"><span class="lb">Cloud Gait <em>spmode</em></span>
-   <select><option>Rush · exp</option><option>Rush² · scaled</option><option>March · incr</option><option>Divide · harm</option><option>Multiply · subharm</option><option selected>Even · spread</option><option>Rubato · deviate</option></select>
-  </div>
-  <div class="duo">
-   <div class="ctl" data-arch="talker"><span class="lb">Gait A <em>spA</em></span><input type="range" min="-80" max="80" value="9"></div>
-   <div class="ctl" data-arch="talker"><span class="lb">Gait B <em>spB</em></span><input type="range" min="0" max="160" value="14"></div>
-  </div>
-  <div class="tglrow" data-arch="dancer"><input type="checkbox" id="chold"><label for="chold">Cloud Hold <em>cloudhold</em></label></div>
- </div>
-
- <div class="panel" data-arch="talker dancer">
-  <h3><span class="dot" style="background:var(--gait1)"></span>PULSES <small>12-tap matrix</small></h3>
-  <div class="duo">
-   <div class="ctl"><span class="lb">Pulses <em>tapcount</em></span><input type="range" min="1" max="12" value="12"></div>
-   <div class="ctl" data-arch="drummer"><span class="lb">Stride <em>basems</em><span class="hint">ms · div when locked</span></span><input type="range" min="1" max="2000" value="150"></div>
-  </div>
-  <div class="ctl" data-arch="talker"><span class="lb">Gait <em>mode</em></span>
-   <select><option>Rush · exp</option><option>Rush² · scaled</option><option>March · incr</option><option>Divide · harm</option><option>Multiply · subharm</option><option selected>Even · spread</option><option>Rubato · deviate</option></select>
-  </div>
-  <div class="duo">
-   <div class="ctl" data-arch="talker"><span class="lb">Gait A <em>A</em></span><input type="range" min="-80" max="80" value="10"></div>
-   <div class="ctl" data-arch="talker"><span class="lb">Gait B <em>B</em></span><input type="range" min="0" max="160" value="60"></div>
-  </div>
-  <div class="ctl" data-arch="dancer"><span class="lb">Everlast <em>fbk</em><span class="hint">1.0 = unity-safe</span></span><input type="range" min="0" max="100" value="50"></div>
-  <div class="duo">
-   <div class="ctl"><span class="lb">Tone <em>lopass</em></span><input type="range" min="0" max="100" value="70"></div>
-   <div class="ctl" data-arch="dancer"><span class="lb">Wash <em>diffusion</em></span><input type="range" min="0" max="100" value="0"></div>
-  </div>
- </div>
-
- <div class="panel" data-arch="dancer talker">
-  <h3><span class="dot" style="background:var(--brth1)"></span>SWAY <small>per-pulse motion · breath</small></h3>
-  <div class="duo">
-   <div class="ctl" data-arch="dancer"><span class="lb">Sway Rate <em>lforate</em></span><input type="range" min="0" max="200" value="3"></div>
-   <div class="ctl" data-arch="dancer"><span class="lb">Sway Depth <em>lfodepth</em></span><input type="range" min="0" max="100" value="0"></div>
-  </div>
-  <div class="ctl" data-arch="talker"><span class="lb">Sway Gait <em>lfomode</em></span>
-   <select><option>Rush · exp</option><option>Rush² · scaled</option><option>March · incr</option><option>Divide · harm</option><option>Multiply · subharm</option><option selected>Even · spread</option><option>Rubato · deviate</option></select>
-  </div>
-  <div class="duo">
-   <div class="ctl" data-arch="talker"><span class="lb">Gait A <em>lfoA</em></span><input type="range" min="-80" max="80" value="10"></div>
-   <div class="ctl" data-arch="talker"><span class="lb">Gait B <em>lfoB</em></span><input type="range" min="0" max="160" value="20"></div>
-  </div>
-  <div class="ctl" data-arch="dancer talker"><span class="lb">Sway Shape <em>lfoshape</em></span>
-   <select><option selected>Flow · sine</option><option>Steps · S&amp;H</option></select>
-  </div>
-  <div class="duo">
-   <div class="ctl" data-arch="dancer"><span class="lb">Breathe <em>evolve</em></span><input type="range" min="0" max="100" value="0"></div>
-   <div class="ctl" data-arch="dancer"><span class="lb">Breath Rate <em>evolverate</em></span><input type="range" min="0" max="100" value="3"></div>
-  </div>
- </div>
-
- <div class="panel">
-  <h3><span class="dot" style="background:var(--rrl1)"></span>SPACE &amp; GRIT</h3>
-  <div class="ctl" data-arch="talker"><span class="lb">Placement <em>panmode</em></span>
-   <select><option selected>Spread · even</option><option>Scatter · deviate</option></select>
-  </div>
-  <div class="duo">
-   <div class="ctl"><span class="lb">Place A <em>panA</em></span><input type="range" min="-100" max="100" value="0"></div>
-   <div class="ctl"><span class="lb">Place B <em>panB</em></span><input type="range" min="0" max="100" value="100"></div>
-  </div>
-  <div class="ctl" data-arch="dancer"><span class="lb">Width <em>width</em></span><input type="range" min="0" max="100" value="100"></div>
-  <div class="duo">
-   <div class="ctl" data-arch="skater"><span class="lb">Grit <em>crushbits</em><span class="hint">wet only</span></span><input type="range" min="1" max="16" value="16"></div>
-   <div class="ctl" data-arch="skater"><span class="lb">Grain <em>downsamp</em></span><input type="range" min="1" max="64" value="1"></div>
-  </div>
- </div>
 
  <div class="panel wide" data-arch="drummer">
   <h3><span class="dot" style="background:var(--meter1)"></span>METER <small>per-domain grid locks · Tempo (bpm) = fallback when no host</small></h3>
@@ -269,30 +224,93 @@ p.note{max-width:1080px;margin:14px auto 0;font-size:10px;color:var(--text-muted
   </div>
  </div>
 
+ <div class="panel" data-arch="dancer">
+  <h3><span class="dot" style="background:var(--brth1)"></span>VOICES <small>capture cloud</small></h3>
+  <div class="ctl" data-arch="dancer"><span class="lb">Cloud <em>cloud</em><span class="hint">input ↔ 16 voices</span></span><input type="range" min="0" max="100" value="0"></div>
+  <div class="ctl" data-arch="dancer skater"><span class="lb">Cloud Speed <em>playspeed</em></span><input type="range" min="25" max="400" value="100"></div>
+  <div class="ctl" data-arch="talker"><span class="lb">Cloud Gait <em>spmode</em></span>
+   <select class="gaitsel"><option>Rush · exp</option><option>Rush² · scaled</option><option>March · incr</option><option>Divide · harm</option><option>Multiply · subharm</option><option selected>Even · spread</option><option>Rubato · deviate</option></select><div class="gaithint"></div>
+  </div>
+  <div class="duo">
+   <div class="ctl" data-arch="talker"><span class="lb">Gait A <em>spA</em></span><input type="range" min="-80" max="80" value="9"></div>
+   <div class="ctl" data-arch="talker"><span class="lb">Gait B <em>spB</em></span><input type="range" min="0" max="160" value="14"></div>
+  </div>
+  <div class="tglrow" data-arch="dancer"><input type="checkbox" id="chold"><label for="chold">Cloud Hold <em>cloudhold</em></label></div>
+ </div>
+
+ <div class="panel" data-arch="talker dancer">
+  <h3><span class="dot" style="background:var(--gait1)"></span>PULSES <small>12-tap matrix</small></h3>
+  <div class="duo">
+   <div class="ctl"><span class="lb">Pulses <em>tapcount</em></span><input type="range" min="1" max="12" value="12"></div>
+   <div class="ctl" data-arch="drummer"><span class="lb">Stride <em>basems</em><span class="hint">ms · div when locked</span></span><input type="range" min="1" max="2000" value="150"></div>
+  </div>
+  <div class="ctl" data-arch="talker"><span class="lb">Gait <em>mode</em></span>
+   <select class="gaitsel"><option>Rush · exp</option><option>Rush² · scaled</option><option>March · incr</option><option>Divide · harm</option><option>Multiply · subharm</option><option selected>Even · spread</option><option>Rubato · deviate</option></select><div class="gaithint"></div>
+  </div>
+  <div class="duo">
+   <div class="ctl" data-arch="talker"><span class="lb">Gait A <em>A</em></span><input type="range" min="-80" max="80" value="10"></div>
+   <div class="ctl" data-arch="talker"><span class="lb">Gait B <em>B</em></span><input type="range" min="0" max="160" value="60"></div>
+  </div>
+  <div class="ctl" data-arch="dancer"><span class="lb">Everlast <em>fbk</em><span class="hint">1.0 = unity-safe</span></span><input type="range" min="0" max="100" value="50"></div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">Tone <em>lopass</em></span><input type="range" min="0" max="100" value="70"></div>
+   <div class="ctl" data-arch="dancer"><span class="lb">Wash <em>diffusion</em></span><input type="range" min="0" max="100" value="0"></div>
+  </div>
+ </div>
+
+ <div class="panel" data-arch="dancer talker">
+  <h3><span class="dot" style="background:var(--brth1)"></span>SWAY <small>per-pulse motion · breath</small></h3>
+  <div class="duo">
+   <div class="ctl" data-arch="dancer"><span class="lb">Sway Rate <em>lforate</em></span><input type="range" min="0" max="200" value="3"></div>
+   <div class="ctl" data-arch="dancer"><span class="lb">Sway Depth <em>lfodepth</em></span><input type="range" min="0" max="100" value="0"></div>
+  </div>
+  <div class="ctl" data-arch="talker"><span class="lb">Sway Gait <em>lfomode</em></span>
+   <select class="gaitsel"><option>Rush · exp</option><option>Rush² · scaled</option><option>March · incr</option><option>Divide · harm</option><option>Multiply · subharm</option><option selected>Even · spread</option><option>Rubato · deviate</option></select><div class="gaithint"></div>
+  </div>
+  <div class="duo">
+   <div class="ctl" data-arch="talker"><span class="lb">Gait A <em>lfoA</em></span><input type="range" min="-80" max="80" value="10"></div>
+   <div class="ctl" data-arch="talker"><span class="lb">Gait B <em>lfoB</em></span><input type="range" min="0" max="160" value="20"></div>
+  </div>
+  <div class="ctl" data-arch="dancer talker"><span class="lb">Sway Shape <em>lfoshape</em></span>
+   <select><option selected>Flow · sine</option><option>Steps · S&amp;H</option></select>
+  </div>
+  <div class="duo">
+   <div class="ctl" data-arch="dancer"><span class="lb">Breathe <em>evolve</em></span><input type="range" min="0" max="100" value="0"></div>
+   <div class="ctl" data-arch="dancer"><span class="lb">Breath Rate <em>evolverate</em></span><input type="range" min="0" max="100" value="3"></div>
+  </div>
+ </div>
+
+ <div class="panel">
+  <h3><span class="dot" style="background:var(--rrl1)"></span>SPACE &amp; GRIT</h3>
+  <div class="ctl" data-arch="talker"><span class="lb">Placement <em>panmode</em></span>
+   <select><option selected>Spread · even</option><option>Scatter · deviate</option></select>
+   <div class="gaithint">Spread: pan runs A → B across active pulses · Scatter: B = center, A = spread (held · RE-ROLL redraws)</div>
+  </div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">Place A <em>panA</em></span><input type="range" min="-100" max="100" value="0"></div>
+   <div class="ctl"><span class="lb">Place B <em>panB</em></span><input type="range" min="0" max="100" value="100"></div>
+  </div>
+  <div class="ctl" data-arch="dancer"><span class="lb">Width <em>width</em></span><input type="range" min="0" max="100" value="100"></div>
+  <div class="duo">
+   <div class="ctl" data-arch="skater"><span class="lb">Grit <em>crushbits</em><span class="hint">wet only</span></span><input type="range" min="1" max="16" value="16"></div>
+   <div class="ctl" data-arch="skater"><span class="lb">Grain <em>downsamp</em></span><input type="range" min="1" max="64" value="1"></div>
+  </div>
+ </div>
+
 </div>
 
 <!-- ARCHETYPE RAIL -->
 <div class="rail" id="arch">
  <h3>ARCHETYPES <small>v2 roadmap</small></h3>
- <div class="pad" data-a="drummer"><div class="pn">THE DRUMMER</div><div class="pg">metronomic chop · grid-locked pulse</div></div>
- <div class="pad" data-a="dancer"><div class="pn">THE DANCER</div><div class="pg">continuous flow · sway &amp; breath</div></div>
- <div class="pad" data-a="talker"><div class="pn">THE TALKER</div><div class="pg">rubato phrasing · stepped emphasis</div></div>
- <div class="pad" data-a="skater"><div class="pn">THE SKATER</div><div class="pg">glide → cut · momentum &amp; grit</div></div>
+ <div class="pad" data-a="drummer"><div class="pn">PERCUTIENDO</div><div class="pg">metronomic chop · grid-locked pulse</div></div>
+ <div class="pad" data-a="dancer"><div class="pn">BAILANDO</div><div class="pg">continuous flow · sway &amp; breath</div></div>
+ <div class="pad" data-a="talker"><div class="pn">HABLANDO</div><div class="pg">rubato phrasing · stepped emphasis</div></div>
+ <div class="pad" data-a="skater"><div class="pn">PATINANDO</div><div class="pg">glide → cut · momentum &amp; grit</div></div>
  <div id="adesc">Hover a pad to see the controls each rhythmic persona drives. Click to pin.</div>
  <div class="v2badge">Phase A (v1 GUI): pads load persona presets.<br>Phase B (v2): continuous presence macros — blendable, ⚠ new params.<br>Phase C: generative rhythm engines per archetype.</div>
 </div>
 
 </main>
-
-<!-- FOOTER -->
-<div class="bar foot">
- <button class="fbtn" data-arch="talker" title="re-rolls all three Rubato tables: taps + pan + cloud speeds">⚄ RE-ROLL</button>
- <button class="fbtn" title="clear — reset params to baseline (audio keeps running)">RESET</button>
- <div class="ctl"><span class="lb">Mix <em>mix</em><span class="hint">source ↔ texture</span></span><input type="range" min="0" max="100" value="0"></div>
- <div class="ctl"><span class="lb">Output <em>outgain</em></span><input type="range" min="0" max="200" value="100"></div>
- <div class="vu"><span></span><span></span><span></span></div>
- <label class="idtgl"><input type="checkbox" id="ids"> show gen IDs (v1.3 bind audit)</label>
-</div>
 
 </div>
 
@@ -302,10 +320,10 @@ Every control binds a v1.3 gen ID 1:1 (toggle “show gen IDs”). Archetype rai
 <script>
 (function(){
 const DESC={
- drummer:'THE DRUMMER — the grid made audible. Meter Lock + Chop + the three domain locks; freeze quantizes to the boundary. Preset persona: grid-locked stutter over a held bed.',
- dancer:'THE DANCER — continuous, embodied flow. Cloud voices, Sway in Flow shape, Breath drift, Everlast near 1.0, full Width and Wash.',
- talker:'THE TALKER — prosody. Rubato gaits, stepped Sway (S&H), Scatter placement, Re-roll as a new utterance.',
- skater:'THE SKATER — momentum, then the cut. Morph glide, short Freeze Window stutters, Grit/Grain as pavement.'};
+ drummer:'PERCUTIENDO — the grid made audible. Meter Lock + Chop + the three domain locks; freeze quantizes to the boundary. Preset persona: grid-locked stutter over a held bed.',
+ dancer:'BAILANDO — continuous, embodied flow. Cloud voices, Sway in Flow shape, Breath drift, Everlast near 1.0, full Width and Wash.',
+ talker:'HABLANDO — prosody. Rubato gaits, stepped Sway (S&H), Scatter placement, Re-roll as a new utterance.',
+ skater:'PATINANDO — momentum, then the cut. Morph glide, short Freeze Window stutters, Grit/Grain as pavement.'};
 const pads=[...document.querySelectorAll('.pad')],adesc=document.getElementById('adesc');
 const dflt=adesc.textContent;let pin=null;
 function set(a){
@@ -325,6 +343,32 @@ const leds=[...document.querySelectorAll('.led')];let li=0;
 setInterval(()=>{li=(li+1)%4;leds.forEach((l,i)=>l.classList.toggle('on',i===li));},500);
 
 document.getElementById('ids').onchange=e=>document.body.classList.toggle('showids',e.target.checked);
+
+document.getElementById('chop').onclick=e=>e.currentTarget.classList.toggle('on');
+
+const GHINT=[
+ 'ratio = B^(A·i) — geometric run · A = exponent (+accel / −decel) · B = base',
+ 'ratio = B^(A·i/12) — geometric, count-normalized · same args, gentler sweep',
+ 'ratio = B + A·i — even steps · A = step size · B = first value',
+ 'ratio = B·A·(i+1) — series ×1 ×2 ×3… · B = fundamental · A = multiplier',
+ 'ratio = B·A÷(i+1) — series ÷1 ÷2 ÷3… · B = fundamental · A = multiplier',
+ 'ratio = A → B — linear fan: first pulse at A, last at B',
+ 'ratio = B ± A·rand — held random · B = center · A = spread · RE-ROLL redraws'];
+document.querySelectorAll('.gaitsel').forEach(s=>{
+ const hint=s.parentElement.querySelector('.gaithint');
+ const set=()=>hint.textContent=GHINT[s.selectedIndex];
+ s.addEventListener('change',set);set();});
+
+document.querySelectorAll('.knob').forEach(k=>{
+ const max=+k.dataset.max||100;let val=+k.dataset.val||0;
+ const kp=k.querySelector('.kp'),kv=k.parentElement.querySelector('.kv');
+ const render=()=>{kp.style.transform='rotate('+(-135+270*val/max)+'deg)';kv.textContent=Math.round(val)+'%';};
+ k.addEventListener('pointerdown',e=>{k.setPointerCapture(e.pointerId);
+  const y0=e.clientY,v0=val;
+  const mv=ev=>{val=Math.max(0,Math.min(max,v0+(y0-ev.clientY)*max/150));render();};
+  const up=()=>{k.removeEventListener('pointermove',mv);k.removeEventListener('pointerup',up);};
+  k.addEventListener('pointermove',mv);k.addEventListener('pointerup',up);});
+ render();});
 })();
 </script>
 </body>
