@@ -13,126 +13,103 @@
  --meter1:#B5D4F4;--meter2:#0C447C; --gait1:#CECBF6;--gait2:#3C3489;
  --frz1:#9FE1CB;--frz2:#085041;   --mrf1:#FAC775;--mrf2:#633806;
  --brth1:#C0DD97;--brth2:#27500A; --rrl1:#F5C4B3;--rrl2:#712B13;
+ --grid:#e4e1d8; --in:#0C447C; --out:#633806; --tap:#085041;
 }
 @media (prefers-color-scheme: dark){:root{
  --surface-2:#262624;--surface-1:#1e1e1c;--surface-0:#161614;
  --text-primary:#eceae4;--text-secondary:#a8a69e;--text-muted:#75736c;
- --border:#3a3936;--border-strong:#4e4d49;--border-stronger:#75736c;}}
+ --border:#3a3936;--border-strong:#4e4d49;--border-stronger:#75736c;
+ --grid:#2c2b28; --in:#B5D4F4; --out:#FAC775; --tap:#9FE1CB;}}
 *{box-sizing:border-box}
-body{background:var(--surface-0);margin:0;padding:24px 12px 40px;font-family:var(--font-sans);color:var(--text-primary)}
-h1{font-size:16px;text-align:center;margin:0 0 2px}
-p.sub{font-family:var(--font-mono);color:var(--text-muted);font-size:10.5px;text-align:center;margin:0 0 16px}
-#app{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+body{background:var(--surface-0);margin:0;padding:20px 10px 36px;font-family:var(--font-sans);color:var(--text-primary);overflow-x:auto}
+h1{font-size:15px;text-align:center;margin:0 0 2px}
+p.sub{font-family:var(--font-mono);color:var(--text-muted);font-size:10px;text-align:center;margin:0 0 12px}
+#app{width:1170px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
 
-/* ---------- header ---------- */
-.bar{display:flex;align-items:center;gap:14px;background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:10px 14px;flex-wrap:wrap}
-.logo{font-weight:800;letter-spacing:1.5px;font-size:14px}
-.logo small{font-weight:400;color:var(--text-muted);letter-spacing:0}
-.bar select{max-width:170px}
-.meterbox{display:flex;align-items:center;gap:8px;margin-left:auto;font-family:var(--font-mono);font-size:11px;color:var(--text-secondary)}
-.led{width:9px;height:9px;border-radius:50%;background:var(--border);display:inline-block;margin-left:3px}
+/* bars */
+.bar{display:flex;align-items:center;gap:12px;background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:8px 12px}
+.logo{font-weight:800;letter-spacing:1.5px;font-size:13px}
+.logo small{font-weight:400;color:var(--text-muted);letter-spacing:0;font-size:10px}
+.bar select{background:var(--surface-2);color:var(--text-primary);border:1px solid var(--border);border-radius:5px;padding:3px 4px;font-size:11px;max-width:190px}
+.meterbox{display:flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:11px;color:var(--text-secondary)}
+.led{width:8px;height:8px;border-radius:50%;background:var(--border);display:inline-block;margin-left:2px}
 .led.on{background:var(--meter2);box-shadow:0 0 5px var(--meter1)}
 @media (prefers-color-scheme: dark){.led.on{background:var(--meter1)}}
-.panicbtn{background:var(--surface-2);border:1px solid var(--border-strong);color:var(--text-secondary);border-radius:6px;padding:5px 10px;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer}
+.panicbtn{background:var(--surface-2);border:1px solid var(--border-strong);color:var(--text-secondary);border-radius:6px;padding:4px 9px;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;margin-left:auto}
 .panicbtn:hover{border-color:#b0483a;color:#b0483a}
+.idtgl{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-muted);cursor:pointer}
 
-/* ---------- vocabulary strip ---------- */
-#vocab{font-family:var(--font-mono);font-size:10px;color:var(--text-secondary);text-align:center;line-height:1.9}
-#vocab b{color:var(--text-primary);font-weight:700}
-
-/* ---------- main grid ---------- */
-main{display:grid;grid-template-columns:190px 1fr 180px;gap:10px;align-items:start}
-.rail,.panel{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:11px 12px}
-#engine{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.panel.wide{grid-column:1/-1}
-h3{font-size:10.5px;letter-spacing:1.2px;margin:0 0 8px;color:var(--text-secondary);display:flex;align-items:center;gap:6px}
-h3 .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
-h3 small{margin-left:auto;font-weight:400;letter-spacing:0;color:var(--text-muted);font-size:9px}
-
-/* ---------- controls ---------- */
-.ctl{display:flex;flex-direction:column;gap:2px;margin:8px 0;border-radius:6px;padding:2px 3px}
-.lb{font-size:11px;font-weight:600;display:flex;justify-content:space-between;align-items:baseline;gap:6px}
-.lb em{font-style:normal;font-family:var(--font-mono);font-size:9px;color:var(--text-muted);display:none}
-body.showids .lb em{display:inline}
-.lb .hint{font-weight:400;color:var(--text-muted);font-size:9.5px}
-input[type=range]{width:100%;accent-color:var(--gait2);height:20px;margin:0}
-@media (prefers-color-scheme: dark){input[type=range]{accent-color:var(--gait1)}}
-select{width:100%;background:var(--surface-2);color:var(--text-primary);border:1px solid var(--border);border-radius:5px;padding:3px 4px;font-size:11px}
-.duo{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.tglrow{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600}
+/* grid-lock strip */
+#locks{display:flex;gap:0;padding:6px 12px}
+#locks .lk{flex:1;display:flex;align-items:center;gap:8px;justify-content:center;border-right:1px dashed var(--border)}
+#locks .lk:last-child{border-right:none}
+.tglrow{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:600}
 .tglrow input{accent-color:var(--meter2)}
-.tglrow em{font-style:normal;font-family:var(--font-mono);font-size:9px;color:var(--text-muted);display:none}
-body.showids .tglrow em{display:inline}
+.tglrow em,.lb em,.chp em{font-style:normal;font-family:var(--font-mono);font-size:8.5px;color:var(--text-muted);display:none}
+body.showids .tglrow em,body.showids .lb em,body.showids .chp em{display:inline}
+#locks select{background:var(--surface-2);color:var(--text-primary);border:1px solid var(--border);border-radius:5px;padding:2px 3px;font-size:10.5px}
 
-/* ---------- perform rail ---------- */
-.frz{width:100%;height:62px;border-radius:10px;border:2px solid var(--frz2);background:var(--surface-2);color:var(--frz2);font-size:14px;font-weight:800;letter-spacing:2px;cursor:pointer}
+/* main columns */
+#main{display:grid;grid-template-columns:148px 152px minmax(320px,1fr) 168px 252px;gap:8px;align-items:stretch}
+.panel{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:9px 10px;display:flex;flex-direction:column}
+h3{font-size:9.5px;letter-spacing:1.1px;margin:0 0 6px;color:var(--text-secondary);display:flex;align-items:center;gap:5px}
+h3 .dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+h3 small{margin-left:auto;font-weight:400;letter-spacing:0;color:var(--text-muted);font-size:8.5px}
+
+/* controls */
+.ctl{display:flex;flex-direction:column;gap:1px;margin:4px 0}
+.lb{font-size:10.5px;font-weight:600;display:flex;justify-content:space-between;align-items:baseline;gap:5px}
+.lb .hint{font-weight:400;color:var(--text-muted);font-size:8.5px}
+input[type=range]{width:100%;accent-color:var(--gait2);height:17px;margin:0}
+@media (prefers-color-scheme: dark){input[type=range]{accent-color:var(--gait1)}}
+.panel select{width:100%;background:var(--surface-2);color:var(--text-primary);border:1px solid var(--border);border-radius:5px;padding:2px 3px;font-size:10.5px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.gaithint{display:none;font-family:var(--font-mono);font-size:8.5px;color:var(--text-muted);line-height:1.35;margin-top:1px}
+body.showids .gaithint{display:block}
+.sep{border-top:1px dashed var(--border);margin:7px 0}
+
+/* perform */
+.frz{width:100%;height:52px;border-radius:9px;border:2px solid var(--frz2);background:var(--surface-2);color:var(--frz2);font-size:13px;font-weight:800;letter-spacing:2px;cursor:pointer}
 @media (prefers-color-scheme: dark){.frz{color:var(--frz1);border-color:var(--frz1)}}
 .frz.armed{animation:blink .45s alternate infinite}
 @keyframes blink{from{box-shadow:0 0 0 0 var(--mrf1)}to{box-shadow:0 0 0 4px var(--mrf1)}}
 .frz.on{background:var(--frz1);color:var(--frz2);border-color:var(--frz2)}
-.frznote{font-size:9px;color:var(--text-muted);text-align:center;margin:4px 0 2px;line-height:1.4}
-.morphctl input{accent-color:var(--mrf2);background:linear-gradient(90deg,var(--frz1),var(--mrf1));border-radius:99px}
-.sep{border-top:1px dashed var(--border);margin:10px 0}
-
-/* ---------- archetype rail ---------- */
-#arch h3{color:var(--text-muted)}
-.pad{border:1px solid var(--border);border-radius:8px;padding:8px 9px;margin:7px 0;cursor:pointer;background:var(--surface-2);transition:opacity .15s}
-.pad .pn{font-weight:800;font-size:11.5px;letter-spacing:.5px}
-.pad .pg{font-size:9.5px;color:var(--text-secondary);margin-top:2px;line-height:1.35}
-.pad.sel{outline:2px solid var(--border-stronger)}
-.v2badge{font-family:var(--font-mono);font-size:9px;color:var(--text-muted);border:1px dashed var(--border-strong);border-radius:6px;padding:5px 7px;margin-top:8px;line-height:1.45}
-#adesc{font-size:10px;color:var(--text-secondary);min-height:40px;margin-top:8px;line-height:1.45}
-
-/* ---------- archetype highlight ---------- */
-body[data-arch] .ctl,body[data-arch] .tglrow,body[data-arch] .frz,body[data-arch] .pad{opacity:.22}
-body[data-arch=drummer] [data-arch~=drummer],
-body[data-arch=dancer]  [data-arch~=dancer],
-body[data-arch=talker]  [data-arch~=talker],
-body[data-arch=skater]  [data-arch~=skater]{opacity:1}
-body[data-arch=drummer] .ctl[data-arch~=drummer],body[data-arch=drummer] .tglrow[data-arch~=drummer],
-body[data-arch=dancer]  .ctl[data-arch~=dancer], body[data-arch=dancer]  .tglrow[data-arch~=dancer],
-body[data-arch=talker]  .ctl[data-arch~=talker], body[data-arch=talker]  .tglrow[data-arch~=talker],
-body[data-arch=skater]  .ctl[data-arch~=skater], body[data-arch=skater]  .tglrow[data-arch~=skater]
- {background:var(--surface-2);outline:1px solid var(--border-stronger)}
-.pad[data-a=drummer] .pn{color:var(--meter2)} .pad[data-a=dancer] .pn{color:var(--brth2)}
-.pad[data-a=talker] .pn{color:var(--gait2)}  .pad[data-a=skater] .pn{color:var(--rrl2)}
-@media (prefers-color-scheme: dark){
- .pad[data-a=drummer] .pn{color:var(--meter1)} .pad[data-a=dancer] .pn{color:var(--brth1)}
- .pad[data-a=talker] .pn{color:var(--gait1)}  .pad[data-a=skater] .pn{color:var(--rrl1)}}
-
-/* ---------- footer ---------- */
-.foot{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.foot .ctl{flex:1;min-width:150px;margin:0}
-.knobwrap{display:flex;flex-direction:column;align-items:center;gap:2px}
-.knob{width:46px;height:46px;border-radius:50%;border:2px solid var(--border-strong);background:var(--surface-2);position:relative;cursor:ns-resize;touch-action:none;user-select:none}
-.knob .kp{position:absolute;left:50%;top:3px;width:3px;height:15px;margin-left:-1.5px;background:var(--text-primary);border-radius:2px;transform-origin:50% 20px}
-.kv{font-family:var(--font-mono);font-size:9.5px;color:var(--text-muted)}
-.gaithint{display:none;font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.4;margin-top:2px;min-height:22px}
-body.showids .gaithint{display:block}
-.chp{width:100%;height:46px;border-radius:10px;border:2px solid var(--meter2);background:var(--surface-2);color:var(--meter2);font-size:13px;font-weight:800;letter-spacing:2px;cursor:pointer}
+.frznote{font-size:8px;color:var(--text-muted);text-align:center;margin:3px 0 0;line-height:1.35}
+.chp{width:100%;height:38px;border-radius:9px;border:2px solid var(--meter2);background:var(--surface-2);color:var(--meter2);font-size:12px;font-weight:800;letter-spacing:2px;cursor:pointer}
 @media (prefers-color-scheme: dark){.chp{color:var(--meter1);border-color:var(--meter1)}}
 .chp.on{background:var(--meter1);color:var(--meter2);border-color:var(--meter2)}
-.chp em{display:none;font-style:normal;font-family:var(--font-mono);font-size:9px;font-weight:400;opacity:.75;letter-spacing:0}
-body.showids .chp em{display:inline}
-.fbtn{background:var(--surface-2);border:1px solid var(--border-strong);border-radius:6px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;color:var(--text-primary)}
-.vu{display:flex;gap:2px;align-items:flex-end;height:22px}
+.morphctl input{accent-color:var(--mrf2);background:linear-gradient(90deg,var(--frz1),var(--mrf1));border-radius:99px}
+
+/* canvases + meters */
+canvas{width:100%;display:block;border-radius:6px;background:var(--surface-2);border:1px solid var(--border)}
+.vcap{font-family:var(--font-mono);font-size:8px;color:var(--text-muted);margin:2px 0 4px;line-height:1.35}
+.fbwrap{height:6px;border:1px solid var(--border);border-radius:99px;background:var(--surface-2);overflow:hidden;margin-top:2px}
+#fbmeter{height:100%;background:var(--frz1);width:50%}
+
+/* master bar */
+.foot .knobwrap{display:flex;flex-direction:column;align-items:center;gap:1px}
+.knob{width:42px;height:42px;border-radius:50%;border:2px solid var(--border-strong);background:var(--surface-2);position:relative;cursor:ns-resize;touch-action:none;user-select:none}
+.knob .kp{position:absolute;left:50%;top:3px;width:3px;height:13px;margin-left:-1.5px;background:var(--text-primary);border-radius:2px;transform-origin:50% 18px}
+.kv{font-family:var(--font-mono);font-size:9px;color:var(--text-muted)}
+.fbtn{background:var(--surface-2);border:1px solid var(--border-strong);border-radius:6px;padding:5px 11px;font-size:10.5px;font-weight:700;cursor:pointer;color:var(--text-primary)}
+#scopewrap{flex:1;min-width:280px}
+.vu{display:flex;gap:2px;align-items:flex-end;height:20px}
 .vu span{width:5px;background:var(--brth1);border-radius:2px;animation:vu 1s ease-in-out infinite alternate}
 .vu span:nth-child(2){animation-delay:.2s}.vu span:nth-child(3){animation-delay:.45s}
-@keyframes vu{from{height:5px}to{height:20px}}
-.idtgl{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text-muted);margin-left:auto}
-p.note{max-width:1080px;margin:14px auto 0;font-size:10px;color:var(--text-muted);text-align:center;line-height:1.6;font-family:var(--font-mono)}
+@keyframes vu{from{height:4px}to{height:18px}}
+p.note{width:1170px;margin:12px auto 0;font-size:9.5px;color:var(--text-muted);text-align:center;line-height:1.6;font-family:var(--font-mono)}
 </style>
 </head>
 <body>
 <h1>IDIORRITMOS — Tier-2 GUI (JUCE) design mockup</h1>
-<p class="sub">J5 layout · J6 rhythm-semantic labels · binds param set v1.3 (48 IDs, unchanged) · hover/click an archetype to trace its controls</p>
+<p class="sub">horizontal frame · paired live visualizations (synthetic data) · binds param set v1.3.2 (47 IDs) · personas live in the preset menu</p>
 
 <div id="app">
 
 <!-- HEADER -->
 <div class="bar">
  <span class="logo">IDIORRITMOS <small>· mc TEXTURES engine</small></span>
- <select title="Factory bank: 4 pure personas + 4 persona-hybrid scenes (RNBO snapshots)">
+ <select title="Factory bank: personas · scenes · sources (RNBO snapshots)">
   <optgroup label="Personas">
    <option>Percutiendo</option><option>Bailando</option><option>Hablando</option><option>Patinando</option>
   </optgroup>
@@ -140,211 +117,191 @@ p.note{max-width:1080px;margin:14px auto 0;font-size:10px;color:var(--text-muted
    <option>Murmur · Bailando×Hablando</option><option>Stutter Step · Percutiendo×Patinando</option>
    <option>Pavement · Patinando×Hablando</option><option>Vigil · Bailando profundo</option>
   </optgroup>
+  <optgroup label="Sources">
+   <option>Harmonic Shadows · guitar</option><option>Vocal Halo · voice</option>
+  </optgroup>
  </select>
- <span class="tglrow" data-arch="drummer"><input type="checkbox" checked id="sync">
-  <label for="sync">METER LOCK <em>sync</em></label></span>
- <div class="meterbox" data-arch="drummer">
-   <span>120.0 <b>·</b> host</span>
-   <span class="led on"></span><span class="led"></span><span class="led"></span><span class="led"></span>
- </div>
+ <span class="tglrow"><input type="checkbox" checked id="sync"><label for="sync">METER LOCK <em>sync</em></label></span>
+ <div class="meterbox"><span>120.0 <b>·</b> host</span>
+  <span class="led on"></span><span class="led"></span><span class="led"></span><span class="led"></span></div>
+ <label class="idtgl" title="reveals each control's internal parameter ID and the per-Gait math (what A and B do in the selected mode)"><input type="checkbox" id="ids"> ⓘ DETAILS — IDs &amp; Gait formulas</label>
+ <label class="idtgl" title="uniform UI scale — the JUCE resizable spec: one base layout, everything (text included) scales together; also corner-draggable in the real plugin">⤢ SIZE
+  <select id="uiscale"><option value="fit" selected>Fit</option><option value="75">75%</option><option value="100">100%</option><option value="125">125%</option><option value="150">150%</option></select></label>
  <button class="panicbtn" title="panic — fast fade + buffer flush (utility, not performance)">PANIC</button>
 </div>
 
-<!-- UTILITY BAR (top row 2: global actions + master levels + meter) -->
+<!-- GRID-LOCK STRIP -->
+<div class="bar" id="locks">
+ <div class="lk"><span class="tglrow"><input type="checkbox" checked id="plock"><label for="plock">Pulse Lock <em>tapsync</em></label></span>
+  <select title="Stride Div (tapdiv)"><option>1/16</option><option selected>1/8</option><option>1/4</option><option>1/2</option><option>1 beat</option><option>2</option><option>4</option></select></div>
+ <div class="lk"><span class="tglrow"><input type="checkbox" checked id="slock"><label for="slock">Sway Lock <em>lfosync</em></label></span>
+  <select title="Sway Div (lfodiv)"><option>1/4</option><option>1/2</option><option selected>1 beat</option><option>2</option><option>4</option><option>8</option></select></div>
+ <div class="lk"><span class="tglrow"><input type="checkbox" checked id="flock"><label for="flock">Freeze Lock <em>freezesync</em></label></span>
+  <select title="Freeze Div (freezediv)"><option>1/4</option><option>1/2</option><option selected>1 beat</option><option>2</option><option>4</option></select></div>
+</div>
+
+<!-- MAIN: five columns -->
+<div id="main">
+
+ <!-- PERFORM -->
+ <div class="panel">
+  <h3><span class="dot" style="background:var(--frz1)"></span>PERFORM</h3>
+  <button class="frz" id="frz">FREEZE</button>
+  <div class="frznote">click = arm · commits on next<br>Freeze Div boundary</div>
+  <div class="ctl"><span class="lb">Freeze Window <em>freezelen</em></span>
+   <input type="range" min="10" max="2000" value="2000"></div>
+  <div class="sep"></div>
+  <div class="ctl morphctl"><span class="lb">MORPH <em>morph</em><span class="hint">texture→glitch</span></span>
+   <input type="range" id="morph" min="0" max="100" value="0"></div>
+  <div class="sep"></div>
+  <button class="chp" id="chop" title="rhythmic amplitude gate — chops the WET texture only (dry passes clean); watch the output trace below">CHOP <em>gateon</em></button>
+  <div class="ctl"><span class="lb">Chop Rate <em>gatediv</em></span>
+   <select><option>1/32</option><option selected>1/16</option><option>1/8</option><option>1/4</option><option>1/2</option></select></div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">Depth <em>gatedepth</em></span><input type="range" min="0" max="100" value="100"></div>
+   <div class="ctl"><span class="lb">Length <em>gateduty</em></span><input type="range" min="2" max="98" value="50"></div>
+  </div>
+ </div>
+
+ <!-- VOICES -->
+ <div class="panel">
+  <h3><span class="dot" style="background:var(--brth1)"></span>VOICES <small>cloud</small></h3>
+  <div class="ctl"><span class="lb">Cloud <em>cloud</em></span><input type="range" id="cloud" min="0" max="100" value="0"></div>
+  <div class="ctl"><span class="lb">Cloud Speed <em>playspeed</em></span><input type="range" min="25" max="400" value="100"></div>
+  <div class="ctl"><span class="lb">Cloud Gait <em>spmode</em></span>
+   <select class="gaitsel"><option>Rush · exp</option><option>Rush² · scaled</option><option>March · incr</option><option>Divide · harm</option><option>Multiply · subharm</option><option selected>Even · spread</option><option>Rubato · deviate</option></select><div class="gaithint"></div></div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">A <em>spA</em></span><input type="range" min="-80" max="80" value="9"></div>
+   <div class="ctl"><span class="lb">B <em>spB</em></span><input type="range" min="0" max="160" value="14"></div>
+  </div>
+  <div class="tglrow" style="margin-top:4px"><input type="checkbox" id="chold"><label for="chold">Cloud Hold <em>cloudhold</em></label></div>
+  <div class="sep"></div>
+  <h3><span class="dot" style="background:var(--brth1)"></span>BREATH</h3>
+  <div class="ctl"><span class="lb">Breathe <em>evolve</em></span><input type="range" id="evolve" min="0" max="100" value="0"></div>
+  <div class="ctl"><span class="lb">Breath Rate <em>evolverate</em></span><input type="range" min="0" max="100" value="3"></div>
+ </div>
+
+ <!-- PULSES + constellation + spectrum -->
+ <div class="panel">
+  <h3><span class="dot" style="background:var(--gait1)"></span>PULSES <small>12-tap matrix · dots = taps: X delay · Y pan · size level</small></h3>
+  <canvas id="constel" height="132"></canvas>
+  <div class="vcap">TAP CONSTELLATION — draws the Gait live: switch modes, thin Pulses, ride Morph, breathe with Evolve; ❄ Freeze holds it · Re-roll re-scatters Rubato</div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">Pulses <em>tapcount</em></span><input type="range" id="tapcount" min="1" max="12" value="12"></div>
+   <div class="ctl"><span class="lb">Stride <em>basems</em><span class="hint">ms·div locked</span></span><input type="range" min="1" max="2000" value="150"></div>
+  </div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">Gait <em>mode</em></span>
+    <select class="gaitsel" id="gaitTap"><option>Rush · exp</option><option>Rush² · scaled</option><option>March · incr</option><option>Divide · harm</option><option>Multiply · subharm</option><option selected>Even · spread</option><option>Rubato · deviate</option></select><div class="gaithint"></div></div>
+   <div class="duo">
+    <div class="ctl"><span class="lb">A <em>A</em></span><input type="range" min="-80" max="80" value="10"></div>
+    <div class="ctl"><span class="lb">B <em>B</em></span><input type="range" min="0" max="160" value="60"></div>
+   </div>
+  </div>
+  <div class="ctl"><span class="lb">Everlast <em>fbk</em><span class="hint">loop energy ↓</span></span>
+   <input type="range" id="fbk" min="0" max="100" value="50">
+   <div class="fbwrap" title="Everlast energy — how alive the feedback loop is"><div id="fbmeter"></div></div></div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">Tone <em>lopass</em></span><input type="range" id="tone" min="0" max="100" value="70"></div>
+   <div class="ctl"><span class="lb">Wash <em>diffusion</em></span><input type="range" id="wash" min="0" max="100" value="0"></div>
+  </div>
+  <canvas id="spectrum" height="48"></canvas>
+  <div class="vcap">LOOP SPECTRUM — darker with Tone, smears with Wash, sustains with Everlast</div>
+ </div>
+
+ <!-- SWAY -->
+ <div class="panel">
+  <h3><span class="dot" style="background:var(--brth1)"></span>SWAY <small>per-pulse motion</small></h3>
+  <div class="ctl"><span class="lb">Sway Rate <em>lforate</em></span><input type="range" min="0" max="200" value="3"></div>
+  <div class="ctl"><span class="lb">Sway Depth <em>lfodepth</em></span><input type="range" id="swdepth" min="0" max="100" value="0"></div>
+  <div class="ctl"><span class="lb">Sway Gait <em>lfomode</em></span>
+   <select class="gaitsel"><option>Rush · exp</option><option>Rush² · scaled</option><option>March · incr</option><option>Divide · harm</option><option>Multiply · subharm</option><option selected>Even · spread</option><option>Rubato · deviate</option></select><div class="gaithint"></div></div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">A <em>lfoA</em></span><input type="range" min="-80" max="80" value="10"></div>
+   <div class="ctl"><span class="lb">B <em>lfoB</em></span><input type="range" min="0" max="160" value="20"></div>
+  </div>
+  <div class="ctl"><span class="lb">Sway Shape <em>lfoshape</em></span>
+   <select id="swshape"><option selected>Flow · sine</option><option>Steps · S&amp;H</option></select></div>
+  <div class="vcap" style="margin-top:6px">Sway wobbles the constellation dots — raise Depth and switch Flow↔Steps to see smooth vs stepped motion.</div>
+ </div>
+
+ <!-- SPACE + gonio + GRIT -->
+ <div class="panel">
+  <h3><span class="dot" style="background:var(--rrl1)"></span>SPACE <small>L↔R vs mid — the width the engine builds</small></h3>
+  <canvas id="gonio" height="128"></canvas>
+  <div class="vcap">STEREO FIELD — mono input = vertical line; taps fan it into width. Try Scatter + full Width.</div>
+  <div class="ctl"><span class="lb">Width <em>width</em></span><input type="range" id="width" min="0" max="100" value="100"></div>
+  <div class="ctl"><span class="lb">Placement <em>panmode</em></span>
+   <select id="place"><option selected>Spread · even</option><option>Scatter · deviate</option></select>
+   <div class="gaithint">Spread: pan runs A → B across active pulses · Scatter: B = center, A = spread (held · RE-ROLL redraws)</div></div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">Place A <em>panA</em></span><input type="range" min="-100" max="100" value="0"></div>
+   <div class="ctl"><span class="lb">Place B <em>panB</em></span><input type="range" min="0" max="100" value="100"></div>
+  </div>
+  <div class="sep"></div>
+  <h3><span class="dot" style="background:var(--rrl1)"></span>GRIT <small>wet only</small></h3>
+  <div class="duo">
+   <div class="ctl"><span class="lb">Grit <em>crushbits</em></span><input type="range" min="1" max="16" value="16"></div>
+   <div class="ctl"><span class="lb">Grain <em>downsamp</em></span><input type="range" min="1" max="64" value="1"></div>
+  </div>
+ </div>
+
+</div>
+
+<!-- MASTER BAR: scope pairs with Mix -->
 <div class="bar foot">
- <button class="fbtn" data-arch="talker" title="re-rolls all three random-held tables: taps + pan + cloud speeds">⚄ RE-ROLL</button>
+ <button class="fbtn" id="reroll" title="re-rolls all three random-held tables: taps + pan + cloud speeds">⚄ RE-ROLL</button>
  <button class="fbtn" title="clear — reset params to baseline (audio keeps running)">RESET</button>
- <div class="knobwrap" title="dry source ↔ full texture">
+ <div id="scopewrap">
+  <canvas id="scope" height="56"></canvas>
+  <div class="vcap"><span style="color:var(--in)">▬</span> input · <span style="color:var(--out)">▬</span> output — watch the texture bloom as you open MIX; CHOP carves only the wet side</div>
+ </div>
+ <div class="knobwrap" title="untouched input ↔ full texture — governs ALL processing incl. Cloud (0 = clean bypass)">
   <span class="lb">Mix <em>mix</em></span>
-  <div class="knob" data-val="0" data-max="100"><div class="kp"></div></div><span class="kv"></span>
+  <div class="knob" id="mixknob" data-val="0" data-max="100"><div class="kp"></div></div><span class="kv"></span>
  </div>
  <div class="knobwrap" title="master output, pre soft-limiter (100% = unity)">
   <span class="lb">Output <em>outgain</em></span>
   <div class="knob" data-val="100" data-max="200"><div class="kp"></div></div><span class="kv"></span>
  </div>
  <div class="vu"><span></span><span></span><span></span></div>
- <label class="idtgl" title="reveals each control's internal parameter ID and the per-Gait math (what A and B do in the selected mode)"><input type="checkbox" id="ids"> ⓘ DETAILS — what each knob controls (IDs &amp; Gait formulas)</label>
 </div>
-
-<!-- VOCABULARY -->
-<div id="vocab">
- <b>PULSE</b> a sounding tap · <b>STRIDE</b> spacing between pulses · <b>GAIT</b> how steps distribute — one engine, four places; each step i gets a ratio × the base (formula under each menu)
- · <b>SWAY</b> per-pulse motion · <b>BREATH</b> the texture’s own drift · <b>CHOP</b> the rhythmic gate · <b>WASH</b> in-loop diffusion · <b>EVERLAST</b> regeneration
-</div>
-
-<main>
-
-<!-- PERFORM RAIL -->
-<div class="rail" id="perform">
- <h3><span class="dot" style="background:var(--frz1)"></span>PERFORM</h3>
- <button class="frz" id="frz" data-arch="skater drummer">FREEZE</button>
- <div class="frznote">click = arm · commits on next<br>Freeze Div boundary (launch-quantize)</div>
- <div class="ctl" data-arch="skater">
-  <span class="lb">Freeze Window <em>freezelen</em><span class="hint">pad ↔ stutter</span></span>
-  <input type="range" min="10" max="2000" value="2000">
- </div>
- <div class="sep"></div>
- <div class="ctl morphctl" data-arch="skater">
-  <span class="lb">MORPH <em>morph</em><span class="hint">texture → glitch</span></span>
-  <input type="range" min="0" max="100" value="0">
- </div>
- <div class="sep"></div>
- <button class="chp" id="chop" data-arch="drummer" title="rhythmic amplitude gate — the chop tool; always beat-relative">CHOP <em>gateon</em></button>
- <div class="ctl" data-arch="drummer">
-  <span class="lb">Chop Rate <em>gatediv</em></span>
-  <select><option>1/32</option><option selected>1/16</option><option>1/8</option><option>1/4</option><option>1/2</option></select>
- </div>
- <div class="duo">
-  <div class="ctl" data-arch="drummer"><span class="lb">Depth <em>gatedepth</em></span><input type="range" min="0" max="100" value="100"></div>
-  <div class="ctl" data-arch="drummer"><span class="lb">Length <em>gateduty</em></span><input type="range" min="2" max="98" value="50"></div>
- </div>
-</div>
-
-<!-- ENGINE -->
-<div id="engine">
-
- <div class="panel wide" data-arch="drummer">
-  <h3><span class="dot" style="background:var(--meter1)"></span>METER <small>per-domain grid locks · Tempo (bpm) = fallback when no host</small></h3>
-  <div class="duo" style="grid-template-columns:1fr 1fr 1fr;gap:14px">
-   <div>
-    <div class="tglrow" data-arch="drummer"><input type="checkbox" checked id="plock"><label for="plock">Pulse Lock <em>tapsync</em></label></div>
-    <div class="ctl" data-arch="drummer"><span class="lb">Stride Div <em>tapdiv</em></span>
-     <select><option>1/16</option><option selected>1/8</option><option>1/4</option><option>1/2</option><option>1 beat</option><option>2</option><option>4</option></select></div>
-   </div>
-   <div>
-    <div class="tglrow" data-arch="drummer dancer"><input type="checkbox" checked id="slock"><label for="slock">Sway Lock <em>lfosync</em></label></div>
-    <div class="ctl" data-arch="drummer"><span class="lb">Sway Div <em>lfodiv</em></span>
-     <select><option>1/4</option><option>1/2</option><option selected>1 beat</option><option>2</option><option>4</option><option>8</option></select></div>
-   </div>
-   <div>
-    <div class="tglrow" data-arch="drummer skater"><input type="checkbox" checked id="flock"><label for="flock">Freeze Lock <em>freezesync</em></label></div>
-    <div class="ctl" data-arch="drummer skater"><span class="lb">Freeze Div <em>freezediv</em></span>
-     <select><option>1/4</option><option>1/2</option><option selected>1 beat</option><option>2</option><option>4</option></select></div>
-   </div>
-  </div>
- </div>
-
- <div class="panel" data-arch="dancer">
-  <h3><span class="dot" style="background:var(--brth1)"></span>VOICES <small>capture cloud</small></h3>
-  <div class="ctl" data-arch="dancer"><span class="lb">Cloud <em>cloud</em><span class="hint">input ↔ 16 voices</span></span><input type="range" min="0" max="100" value="0"></div>
-  <div class="ctl" data-arch="dancer skater"><span class="lb">Cloud Speed <em>playspeed</em></span><input type="range" min="25" max="400" value="100"></div>
-  <div class="ctl" data-arch="talker"><span class="lb">Cloud Gait <em>spmode</em></span>
-   <select class="gaitsel"><option>Rush · exp</option><option>Rush² · scaled</option><option>March · incr</option><option>Divide · harm</option><option>Multiply · subharm</option><option selected>Even · spread</option><option>Rubato · deviate</option></select><div class="gaithint"></div>
-  </div>
-  <div class="duo">
-   <div class="ctl" data-arch="talker"><span class="lb">Gait A <em>spA</em></span><input type="range" min="-80" max="80" value="9"></div>
-   <div class="ctl" data-arch="talker"><span class="lb">Gait B <em>spB</em></span><input type="range" min="0" max="160" value="14"></div>
-  </div>
-  <div class="tglrow" data-arch="dancer"><input type="checkbox" id="chold"><label for="chold">Cloud Hold <em>cloudhold</em></label></div>
- </div>
-
- <div class="panel" data-arch="talker dancer">
-  <h3><span class="dot" style="background:var(--gait1)"></span>PULSES <small>12-tap matrix</small></h3>
-  <div class="duo">
-   <div class="ctl"><span class="lb">Pulses <em>tapcount</em></span><input type="range" min="1" max="12" value="12"></div>
-   <div class="ctl" data-arch="drummer"><span class="lb">Stride <em>basems</em><span class="hint">ms · div when locked</span></span><input type="range" min="1" max="2000" value="150"></div>
-  </div>
-  <div class="ctl" data-arch="talker"><span class="lb">Gait <em>mode</em></span>
-   <select class="gaitsel"><option>Rush · exp</option><option>Rush² · scaled</option><option>March · incr</option><option>Divide · harm</option><option>Multiply · subharm</option><option selected>Even · spread</option><option>Rubato · deviate</option></select><div class="gaithint"></div>
-  </div>
-  <div class="duo">
-   <div class="ctl" data-arch="talker"><span class="lb">Gait A <em>A</em></span><input type="range" min="-80" max="80" value="10"></div>
-   <div class="ctl" data-arch="talker"><span class="lb">Gait B <em>B</em></span><input type="range" min="0" max="160" value="60"></div>
-  </div>
-  <div class="ctl" data-arch="dancer"><span class="lb">Everlast <em>fbk</em><span class="hint">1.0 = unity-safe</span></span><input type="range" min="0" max="100" value="50"></div>
-  <div class="duo">
-   <div class="ctl"><span class="lb">Tone <em>lopass</em></span><input type="range" min="0" max="100" value="70"></div>
-   <div class="ctl" data-arch="dancer"><span class="lb">Wash <em>diffusion</em></span><input type="range" min="0" max="100" value="0"></div>
-  </div>
- </div>
-
- <div class="panel" data-arch="dancer talker">
-  <h3><span class="dot" style="background:var(--brth1)"></span>SWAY <small>per-pulse motion · breath</small></h3>
-  <div class="duo">
-   <div class="ctl" data-arch="dancer"><span class="lb">Sway Rate <em>lforate</em></span><input type="range" min="0" max="200" value="3"></div>
-   <div class="ctl" data-arch="dancer"><span class="lb">Sway Depth <em>lfodepth</em></span><input type="range" min="0" max="100" value="0"></div>
-  </div>
-  <div class="ctl" data-arch="talker"><span class="lb">Sway Gait <em>lfomode</em></span>
-   <select class="gaitsel"><option>Rush · exp</option><option>Rush² · scaled</option><option>March · incr</option><option>Divide · harm</option><option>Multiply · subharm</option><option selected>Even · spread</option><option>Rubato · deviate</option></select><div class="gaithint"></div>
-  </div>
-  <div class="duo">
-   <div class="ctl" data-arch="talker"><span class="lb">Gait A <em>lfoA</em></span><input type="range" min="-80" max="80" value="10"></div>
-   <div class="ctl" data-arch="talker"><span class="lb">Gait B <em>lfoB</em></span><input type="range" min="0" max="160" value="20"></div>
-  </div>
-  <div class="ctl" data-arch="dancer talker"><span class="lb">Sway Shape <em>lfoshape</em></span>
-   <select><option selected>Flow · sine</option><option>Steps · S&amp;H</option></select>
-  </div>
-  <div class="duo">
-   <div class="ctl" data-arch="dancer"><span class="lb">Breathe <em>evolve</em></span><input type="range" min="0" max="100" value="0"></div>
-   <div class="ctl" data-arch="dancer"><span class="lb">Breath Rate <em>evolverate</em></span><input type="range" min="0" max="100" value="3"></div>
-  </div>
- </div>
-
- <div class="panel">
-  <h3><span class="dot" style="background:var(--rrl1)"></span>SPACE &amp; GRIT</h3>
-  <div class="ctl" data-arch="talker"><span class="lb">Placement <em>panmode</em></span>
-   <select><option selected>Spread · even</option><option>Scatter · deviate</option></select>
-   <div class="gaithint">Spread: pan runs A → B across active pulses · Scatter: B = center, A = spread (held · RE-ROLL redraws)</div>
-  </div>
-  <div class="duo">
-   <div class="ctl"><span class="lb">Place A <em>panA</em></span><input type="range" min="-100" max="100" value="0"></div>
-   <div class="ctl"><span class="lb">Place B <em>panB</em></span><input type="range" min="0" max="100" value="100"></div>
-  </div>
-  <div class="ctl" data-arch="dancer"><span class="lb">Width <em>width</em></span><input type="range" min="0" max="100" value="100"></div>
-  <div class="duo">
-   <div class="ctl" data-arch="skater"><span class="lb">Grit <em>crushbits</em><span class="hint">wet only</span></span><input type="range" min="1" max="16" value="16"></div>
-   <div class="ctl" data-arch="skater"><span class="lb">Grain <em>downsamp</em></span><input type="range" min="1" max="64" value="1"></div>
-  </div>
- </div>
 
 </div>
 
-<!-- ARCHETYPE RAIL -->
-<div class="rail" id="arch">
- <h3>ARCHETYPES <small>v2 roadmap</small></h3>
- <div class="pad" data-a="drummer"><div class="pn">PERCUTIENDO</div><div class="pg">metronomic chop · grid-locked pulse</div></div>
- <div class="pad" data-a="dancer"><div class="pn">BAILANDO</div><div class="pg">continuous flow · sway &amp; breath</div></div>
- <div class="pad" data-a="talker"><div class="pn">HABLANDO</div><div class="pg">rubato phrasing · stepped emphasis</div></div>
- <div class="pad" data-a="skater"><div class="pn">PATINANDO</div><div class="pg">glide → cut · momentum &amp; grit</div></div>
- <div id="adesc">Hover a pad to see the controls each rhythmic persona drives. Click to pin.</div>
- <div class="v2badge">Phase A (v1 GUI): pads load persona presets.<br>Phase B (v2): continuous presence macros — blendable, ⚠ new params.<br>Phase C: generative rhythm engines per archetype.</div>
-</div>
-
-</main>
-
-</div>
-
-<p class="note">Mockup = the JUCE Tier-2 spec: zones → J5 layout · labels/enums → J6 tables · beat LEDs + armed-freeze via JUCE AudioPlayHead → J7.<br>
-Every control binds a v1.3 gen ID 1:1 (toggle “show gen IDs”). Archetype rail ships dimmed in v1 — it teaches the vocabulary before Phase B makes it functional.</p>
+<p class="note">Vocabulary: PULSE a sounding tap · STRIDE spacing · GAIT how steps distribute (one engine, four places) · SWAY per-pulse motion · BREATH self-drift · CHOP the gate · WASH in-loop diffusion · EVERLAST regeneration.<br>
+Mockup = the JUCE Tier-2 spec: zones → J5 · labels/enums → J6 · beat LEDs + armed-freeze via AudioPlayHead → J7 · visualizations → JV rows (panels need gen outports; in/out scope is free).<br>
+RESIZABLE (required): 1170×base scales UNIFORMLY — setResizable + fixed aspect + Component::setTransform(scale); corner-drag AND the ⤢ SIZE menu; chosen scale persists in plugin state. Text grows with everything else — no tiny-font laptop squinting.<br>
+Visualizations run on synthetic data wired to these controls — design reference, not audio.</p>
 
 <script>
 (function(){
-const DESC={
- drummer:'PERCUTIENDO — the grid made audible. Meter Lock + Chop + the three domain locks; freeze quantizes to the boundary. Preset persona: grid-locked stutter over a held bed.',
- dancer:'BAILANDO — continuous, embodied flow. Cloud voices, Sway in Flow shape, Breath drift, Everlast near 1.0, full Width and Wash.',
- talker:'HABLANDO — prosody. Rubato gaits, stepped Sway (S&H), Scatter placement, Re-roll as a new utterance.',
- skater:'PATINANDO — momentum, then the cut. Morph glide, short Freeze Window stutters, Grit/Grain as pavement.'};
-const pads=[...document.querySelectorAll('.pad')],adesc=document.getElementById('adesc');
-const dflt=adesc.textContent;let pin=null;
-function set(a){
- if(a){document.body.dataset.arch=a}else{document.body.removeAttribute('data-arch')}
- pads.forEach(p=>p.classList.toggle('sel',p.dataset.a===a));
- adesc.textContent=a?DESC[a]:dflt;}
-pads.forEach(p=>{p.onmouseenter=()=>set(p.dataset.a);p.onmouseleave=()=>set(pin);
- p.onclick=()=>{pin=(pin===p.dataset.a)?null:p.dataset.a;set(pin);};});
-
-const frz=document.getElementById('frz');let fs=0,t=null; // 0 idle 1 armed 2 frozen
-frz.onclick=()=>{clearTimeout(t);
+/* ---------- basic UI ---------- */
+const frz=document.getElementById('frz');let fs=0,ft=null; // 0 idle 1 armed 2 frozen
+frz.onclick=()=>{clearTimeout(ft);
  if(fs===0){fs=1;frz.className='frz armed';frz.textContent='ARMED…';
-  t=setTimeout(()=>{if(fs===1){fs=2;frz.className='frz on';frz.textContent='FROZEN';}},1400);}
+  ft=setTimeout(()=>{if(fs===1){fs=2;frz.className='frz on';frz.textContent='FROZEN';}},1400);}
  else{fs=0;frz.className='frz';frz.textContent='FREEZE';}};
-
+const chop=document.getElementById('chop');
+chop.onclick=()=>chop.classList.toggle('on');
+document.getElementById('ids').onchange=e=>document.body.classList.toggle('showids',e.target.checked);
 const leds=[...document.querySelectorAll('.led')];let li=0;
 setInterval(()=>{li=(li+1)%4;leds.forEach((l,i)=>l.classList.toggle('on',i===li));},500);
 
-document.getElementById('ids').onchange=e=>document.body.classList.toggle('showids',e.target.checked);
-
-document.getElementById('chop').onclick=e=>e.currentTarget.classList.toggle('on');
+/* UI SCALE — mockup demo of the JUCE uniform-scale resizable spec */
+const usc=document.getElementById('uiscale'),app=document.getElementById('app'),
+ note=document.querySelector('p.note');
+function applyScale(){
+ const v=usc.value;
+ const f=v==='fit'?Math.min(1.8,Math.max(0.55,(innerWidth-28)/1170)):(+v)/100;
+ app.style.zoom=f;note.style.zoom=f;
+ setTimeout(()=>dispatchEvent(new Event('resize')),0);   // refit canvases at new size
+}
+usc.onchange=applyScale;
+addEventListener('resize',()=>{if(usc.value==='fit'){
+ const f=Math.min(1.8,Math.max(0.55,(innerWidth-28)/1170));
+ if(Math.abs(f-(parseFloat(app.style.zoom)||1))>0.02){app.style.zoom=f;note.style.zoom=f;}}});
+applyScale();
 
 const GHINT=[
  'ratio = B^(A·i) — geometric run · A = exponent (+accel / −decel) · B = base',
@@ -362,13 +319,134 @@ document.querySelectorAll('.gaitsel').forEach(s=>{
 document.querySelectorAll('.knob').forEach(k=>{
  const max=+k.dataset.max||100;let val=+k.dataset.val||0;
  const kp=k.querySelector('.kp'),kv=k.parentElement.querySelector('.kv');
- const render=()=>{kp.style.transform='rotate('+(-135+270*val/max)+'deg)';kv.textContent=Math.round(val)+'%';};
+ const render=()=>{kp.style.transform='rotate('+(-135+270*val/max)+'deg)';kv.textContent=Math.round(val)+'%';k.dataset.val=val;};
  k.addEventListener('pointerdown',e=>{k.setPointerCapture(e.pointerId);
   const y0=e.clientY,v0=val;
   const mv=ev=>{val=Math.max(0,Math.min(max,v0+(y0-ev.clientY)*max/150));render();};
   const up=()=>{k.removeEventListener('pointermove',mv);k.removeEventListener('pointerup',up);};
   k.addEventListener('pointermove',mv);k.addEventListener('pointerup',up);});
  render();});
+
+/* ---------- shared control reads ---------- */
+const $=id=>document.getElementById(id);
+const el={gait:$('gaitTap'),tap:$('tapcount'),morph:$('morph'),evolve:$('evolve'),
+ width:$('width'),place:$('place'),fbk:$('fbk'),tone:$('tone'),wash:$('wash'),
+ swd:$('swdepth'),sws:$('swshape'),mix:$('mixknob')};
+const N=12,rnd=[],rndp=[];
+function reroll(){for(let i=0;i<N;i++){rnd[i]=Math.random()*2-1;rndp[i]=Math.random()*2-1;}}
+reroll();
+$('reroll').addEventListener('click',reroll);
+
+const root=document.documentElement, cv=v=>getComputedStyle(root).getPropertyValue(v).trim();
+function fit(c,h){const r=c.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1);
+ c.width=r.width*d;c.height=h*d;const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);
+ c._w=r.width;c._h=h;return x;}
+const constel=$('constel'),spec=$('spectrum'),gonio=$('gonio'),scope=$('scope');
+let cx=fit(constel,132),px=fit(spec,48),gx=fit(gonio,128),sx=fit(scope,56);
+addEventListener('resize',()=>{cx=fit(constel,132);px=fit(spec,48);gx=fit(gonio,128);sx=fit(scope,56);});
+
+/* ---------- tap model (drives constellation + gonio + scope) ---------- */
+let phase=0,tprev=performance.now(),held=null;
+function taps(){
+ const g=el.gait.selectedIndex, n=+el.tap.value, m=el.morph.value/100,
+  ev=el.evolve.value/100, w=el.width.value/100, scat=el.place.selectedIndex===1,
+  fb=el.fbk.value/100, swd=el.swd.value/100, step=el.sws.selectedIndex===1;
+ const nact=Math.max(1,Math.round(n*(1-m)+2*m));
+ const out=[];
+ for(let i=0;i<N;i++){
+  let ratio;
+  if(g===0)ratio=Math.pow(1.5,i)/Math.pow(1.5,N-1)*N;      // Rush
+  else if(g===1)ratio=Math.pow(1.5,i/2)/Math.pow(1.5,(N-1)/2)*N; // Rush²
+  else if(g===2)ratio=1+i;                                  // March
+  else if(g===3)ratio=(i+1);                                // Divide
+  else if(g===4)ratio=N/(i+1);                              // Multiply
+  else if(g===6)ratio=1+i+rnd[i]*3;                         // Rubato
+  else ratio=1+i;                                           // Even
+  let t=ratio/(N+2);
+  t+=Math.sin(phase*0.6+i*1.7)*ev*0.06;                     // Breath drift
+  let sw=Math.sin(phase*3+i*2.1); if(step)sw=Math.sign(sw); // Sway wobble
+  t+=sw*swd*0.03;
+  t=Math.max(0.02,Math.min(0.98,t));
+  let pan=scat?rndp[i]:(nact>1?(i/(nact-1))*2-1:0);
+  pan*=w;
+  const lvl=Math.pow(Math.max(fb,0.15),i*0.35)*(i<nact?1:0)*(1-m*0.35);
+  out.push({t,pan,lvl});
+ }
+ return out;
+}
+
+/* ---------- draw helpers ---------- */
+function grid(x,w,h,r,c){x.strokeStyle=cv('--grid');x.lineWidth=1;x.globalAlpha=.8;
+ for(let i=1;i<r;i++){const y=h*i/r;x.beginPath();x.moveTo(0,y);x.lineTo(w,y);x.stroke();}
+ for(let i=1;i<c;i++){const xx=w*i/c;x.beginPath();x.moveTo(xx,0);x.lineTo(xx,h);x.stroke();}
+ x.globalAlpha=1;}
+
+function drawConstel(T){const w=constel._w,h=constel._h,pad=14;
+ cx.clearRect(0,0,w,h);grid(cx,w,h,4,8);
+ for(const tp of T){if(tp.lvl<=0)continue;
+  const X=pad+tp.t*(w-pad*2), Y=h/2-tp.pan*(h/2-10), r=2+tp.lvl*7;
+  cx.beginPath();cx.arc(X,Y,r,0,7);
+  cx.fillStyle=cv('--tap');cx.globalAlpha=0.25+tp.lvl*0.7;cx.fill();
+  cx.globalAlpha=1;cx.strokeStyle=cv('--tap');cx.lineWidth=1;cx.stroke();
+  if(fs===2){cx.globalAlpha=.45;cx.beginPath();cx.arc(X,Y,r+3,0,7);cx.stroke();cx.globalAlpha=1;}}
+ if(fs===2){cx.fillStyle=cv('--out');cx.font='bold 9px '+cv('--font-mono');cx.fillText('❄ FROZEN',w-58,12);}}
+
+const NB=40,sb=new Float32Array(NB);
+function drawSpec(T){const w=spec._w,h=spec._h;px.clearRect(0,0,w,h);grid(px,w,h,2,10);
+ const tone=el.tone.value/100, wash=el.wash.value/100, fb=el.fbk.value/100;
+ for(let b=0;b<NB;b++){
+  let t=Math.exp(-b*(0.16-tone*0.12))*(0.3+fb*0.6);
+  for(const tp of T)t+=tp.lvl*Math.exp(-Math.pow(b-(2+tp.t*NB*0.7),2)*(0.14-wash*0.12))*0.10;
+  t=Math.min(1,t*(0.85+Math.sin(phase*3+b)*0.05));
+  sb[b]+=(t-sb[b])*0.2;
+  const bw=w/NB,bh=sb[b]*h*0.92;
+  px.fillStyle=cv('--tap');px.globalAlpha=0.3+sb[b]*0.6;
+  px.fillRect(b*bw+1,h-bh,bw-2,bh);px.globalAlpha=1;}}
+
+const gpts=[];
+function drawGonio(T){const w=gonio._w,h=gonio._h,cxp=w/2,cyp=h/2,R=Math.min(w,h)*0.44;
+ gx.fillStyle=cv('--surface-2');gx.globalAlpha=.2;gx.fillRect(0,0,w,h);gx.globalAlpha=1;
+ gx.strokeStyle=cv('--grid');gx.globalAlpha=.8;
+ gx.beginPath();gx.moveTo(cxp-R,cyp);gx.lineTo(cxp+R,cyp);gx.moveTo(cxp,cyp-R);gx.lineTo(cxp,cyp+R);gx.stroke();
+ gx.beginPath();gx.arc(cxp,cyp,R,0,7);gx.stroke();gx.globalAlpha=1;
+ gx.font='8px '+cv('--font-mono');gx.fillStyle=cv('--text-muted');
+ gx.fillText('L',cxp-R-8,cyp+3);gx.fillText('R',cxp+R+3,cyp+3);
+ for(let k=0;k<5;k++){const ph=phase*40-k*0.15,s=Math.sin(ph)*0.55;
+  let L=s,Rr=s;
+  for(const tp of T){const l=Math.sqrt((1-(tp.pan+1)/2)),r=Math.sqrt((tp.pan+1)/2);
+   const sig=Math.sin(ph-tp.t*3)*tp.lvl*0.5;L+=sig*l;Rr+=sig*r;}
+  gpts.push([L,Rr]);}
+ while(gpts.length>360)gpts.shift();
+ for(let i=0;i<gpts.length;i++){const[L,Rr]=gpts[i],a=i/gpts.length;
+  gx.fillStyle=cv('--tap');gx.globalAlpha=a*0.7;
+  gx.beginPath();gx.arc(cxp+(L-Rr)/2*R*0.62,cyp-(L+Rr)/2*R*0.62,1.4,0,7);gx.fill();}
+ gx.globalAlpha=1;}
+
+const SB=420,bin=new Float32Array(SB),bout=new Float32Array(SB);let sp=0,pluck=1;
+function drawScope(T,dt){const w=scope._w,h=scope._h;
+ pluck-=dt*0.0012;if(pluck<0)pluck=1;
+ const mx=(+el.mix.dataset.val||0)/100, fb=el.fbk.value/100;
+ const inS=Math.sin(phase*38)*Math.exp(-(1-pluck)*3.5)*0.8;
+ let tex=0;for(const tp of T)tex+=Math.sin((phase-tp.t*0.4)*38)*Math.exp(-(1-pluck)*(2.2-fb*1.5))*tp.lvl*0.2;
+ if(chop.classList.contains('on'))tex*=(Math.sin(phase*12)>0?1:0.08); // gate = wet only
+ const outS=Math.tanh(inS*(1-mx)+tex*mx*1.6);
+ bin[sp]=inS;bout[sp]=outS;sp=(sp+1)%SB;
+ sx.clearRect(0,0,w,h);grid(sx,w,h,2,10);
+ const tr=(buf,col)=>{sx.strokeStyle=col;sx.lineWidth=1.4;sx.beginPath();
+  for(let i=0;i<SB;i++){const idx=(sp+i)%SB,xx=i/SB*w,yy=h/2-buf[idx]*h*0.42;
+   i?sx.lineTo(xx,yy):sx.moveTo(xx,yy);}sx.stroke();};
+ tr(bin,cv('--in'));tr(bout,cv('--out'));}
+
+/* ---------- loop ---------- */
+function frame(now){const dt=Math.min(50,now-tprev);tprev=now;phase+=dt*0.001;
+ let T;
+ if(fs===2){if(!held)held=taps();T=held;}else{held=null;T=taps();}
+ drawConstel(T);drawSpec(T);drawGonio(T);drawScope(T,dt);
+ const fb=el.fbk.value;
+ const m=$('fbmeter');m.style.width=fb+'%';
+ m.style.opacity=0.55+0.45*Math.abs(Math.sin(phase*(0.5+fb*0.04)));
+ requestAnimationFrame(frame);}
+requestAnimationFrame(frame);
 })();
 </script>
 </body>

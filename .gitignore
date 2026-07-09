@@ -6,3 +6,6 @@ build/
 exports/
 audio/*.wav
 audio/*.aif
+
+# JUCE Tier-2 build environment (rnbo.example.juce template + JUCE submodule) — not part of the plugin source
+juce/

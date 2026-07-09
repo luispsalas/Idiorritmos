@@ -37,11 +37,13 @@ Even the parameter vocabulary is rhythmic: taps are **Pulses**, their spacing is
 
 ## Factory bank
 
-Two tiers, eight presets:
+Ten presets in three tiers:
 
 **Personas** — canonical definitions of each rhythmic behavior: *Percutiendo*, *Bailando*, *Hablando*, *Patinando*.
 
 **Scenes** — persona hybrids: *Murmur* (Bailando × Hablando — a granular murmur of speech-like voices), *Stutter Step* (Percutiendo × Patinando — the signature grid-locked freeze-stutter), *Pavement* (Patinando × Hablando — dark lo-fi grit), *Vigil* (deep Bailando — a near-motionless eternal bed).
+
+**Sources** — plain-named starting points tuned to a live instrument, built to blend as you raise **Mix**: *Harmonic Shadows* (melodic input / guitar — the dry note plus a fan of harmonic delay shadows, a pitched cloud halo, and diffusion for fat, spread full-width) and *Vocal Halo* (voice, spoken or sung — a harmonic cloud choir of sub, fifth and octave, a long diffuse wash, scattered across the stereo field).
 
 ## Parameter reference
 

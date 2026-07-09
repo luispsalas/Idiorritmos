@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>IDIORRITMOS — signal visualization reference (Tier-2 JUCE)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+ --surface-2:#ffffff;--surface-1:#f7f6f2;--surface-0:#efede7;
+ --text-primary:#1a1a18;--text-secondary:#5f5e5a;--text-muted:#8a8880;
+ --border:#dcd9d0;--border-strong:#c2bfb4;
+ --font-sans:system-ui,-apple-system,"Segoe UI",sans-serif;--font-mono:ui-monospace,Menlo,monospace;
+ --in:#0C447C;--inb:#B5D4F4; --out:#633806;--outb:#FAC775;
+ --tap:#085041;--tapb:#9FE1CB; --grid:#dcd9d0; --scan:#712B13;
+}
+@media (prefers-color-scheme: dark){:root{
+ --surface-2:#262624;--surface-1:#1e1e1c;--surface-0:#161614;
+ --text-primary:#eceae4;--text-secondary:#a8a69e;--text-muted:#75736c;
+ --border:#3a3936;--border-strong:#4e4d49;
+ --in:#B5D4F4;--inb:#0C447C; --out:#FAC775;--outb:#633806;
+ --tap:#9FE1CB;--tapb:#085041; --grid:#2c2b28; --scan:#F5C4B3;}}
+:root[data-theme="dark"]{
+ --surface-2:#262624;--surface-1:#1e1e1c;--surface-0:#161614;
+ --text-primary:#eceae4;--text-secondary:#a8a69e;--text-muted:#75736c;
+ --border:#3a3936;--border-strong:#4e4d49;--grid:#2c2b28;
+ --in:#B5D4F4;--inb:#0C447C;--out:#FAC775;--outb:#633806;--tap:#9FE1CB;--tapb:#085041;--scan:#F5C4B3;}
+:root[data-theme="light"]{
+ --surface-2:#ffffff;--surface-1:#f7f6f2;--surface-0:#efede7;
+ --text-primary:#1a1a18;--text-secondary:#5f5e5a;--text-muted:#8a8880;
+ --border:#dcd9d0;--border-strong:#c2bfb4;--grid:#dcd9d0;
+ --in:#0C447C;--inb:#B5D4F4;--out:#633806;--outb:#FAC775;--tap:#085041;--tapb:#9FE1CB;--scan:#712B13;}
+*{box-sizing:border-box}
+body{background:var(--surface-0);margin:0;padding:24px 12px 44px;font-family:var(--font-sans);color:var(--text-primary)}
+h1{font-size:16px;text-align:center;margin:0 0 3px}
+p.sub{font-family:var(--font-mono);color:var(--text-muted);font-size:10.5px;text-align:center;margin:0 0 16px}
+#app{max-width:1040px;margin:0 auto}
+#ctl{display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:center;background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:14px}
+#ctl label{font-size:11px;font-weight:600;display:flex;align-items:center;gap:6px}
+#ctl select{background:var(--surface-2);color:var(--text-primary);border:1px solid var(--border);border-radius:5px;padding:3px 5px;font-size:11px}
+#ctl .seg{display:flex;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--text-secondary)}
+.tog{cursor:pointer;border:1px solid var(--border-strong);background:var(--surface-2);color:var(--text-secondary);border-radius:6px;padding:4px 10px;font-size:10px;font-weight:700;letter-spacing:.5px}
+.tog.on{background:var(--tapb);color:var(--tap);border-color:var(--tap)}
+#grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.panel{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:11px 12px}
+.panel.wide{grid-column:1/-1}
+.ph{display:flex;align-items:baseline;gap:8px;margin-bottom:7px}
+.ph b{font-size:12px}
+.ph .badge{font-family:var(--font-mono);font-size:8.5px;font-weight:700;letter-spacing:.4px;padding:1.5px 6px;border-radius:99px;background:var(--tapb);color:var(--tap)}
+.ph .badge.free{background:var(--inb);color:var(--in)}
+.ph small{margin-left:auto;font-family:var(--font-mono);font-size:9px;color:var(--text-muted)}
+canvas{width:100%;display:block;border-radius:6px;background:var(--surface-2);border:1px solid var(--border)}
+.cap{font-family:var(--font-mono);font-size:9.5px;color:var(--text-muted);line-height:1.5;margin-top:6px}
+.cap b{color:var(--text-secondary)}
+.k{display:inline-block;width:8px;height:8px;border-radius:2px;vertical-align:middle;margin-right:3px}
+#foot{font-family:var(--font-mono);font-size:9.5px;color:var(--text-muted);text-align:center;line-height:1.6;margin-top:16px;max-width:920px;margin-left:auto;margin-right:auto}
+.theme{position:fixed;top:10px;right:12px;font-size:10px;color:var(--text-muted);cursor:pointer;border:1px solid var(--border);border-radius:6px;padding:3px 8px;background:var(--surface-1)}
+</style>
+</head>
+<body>
+<div class="theme" id="themebtn">◐ theme</div>
+<h1>IDIORRITMOS — signal visualization reference</h1>
+<p class="sub">Tier-2 JUCE GUI concept sketch · synthetic data, design reference only · not the shipping UI</p>
+
+<div id="app">
+
+<div id="ctl">
+ <label>Gait
+  <select id="gait">
+   <option value="rush">Rush (exponential)</option>
+   <option value="march">March (linear)</option>
+   <option value="divide">Divide (harmonic)</option>
+   <option value="even" selected>Even (spread)</option>
+   <option value="rubato">Rubato (random held)</option>
+  </select>
+ </label>
+ <label>Placement
+  <select id="pan">
+   <option value="spread" selected>Spread (L→R)</option>
+   <option value="scatter">Scatter (random)</option>
+  </select>
+ </label>
+ <span class="tog" id="evolve">EVOLVE</span>
+ <span class="tog" id="freeze">FREEZE</span>
+ <span class="seg">taps <b id="ntap">12</b> · fbk <b id="fbk">0.6</b></span>
+</div>
+
+<div id="grid">
+
+ <div class="panel wide">
+  <div class="ph"><b>1 · Input vs. Output — overlay scope</b><span class="badge free">FREE</span>
+   <small>juce::AudioVisualiserComponent · dry-in + final-out, sample-accurate</small></div>
+  <canvas id="scope" height="150"></canvas>
+  <div class="cap"><span class="k" style="background:var(--in)"></span><b>Input</b> (dry source) &nbsp;
+   <span class="k" style="background:var(--out)"></span><b>Output</b> (texture bloom) — the <code>mc.scope~</code> analog. Both signals exist at the JUCE processBlock boundary, so this needs <b>no engine change</b>.</div>
+ </div>
+
+ <div class="panel">
+  <div class="ph"><b>2 · Stereo field — goniometer</b><span class="badge">via outport data</span>
+   <small>custom Path / foleys</small></div>
+  <canvas id="gonio" height="230"></canvas>
+  <div class="cap">Plots L against R. A mono source enters as a vertical line; the taps <b>fan it into width</b>. The clearest read on the stereo space the engine builds — try <b>Placement → Scatter</b>.</div>
+ </div>
+
+ <div class="panel">
+  <div class="ph"><b>3 · Tap constellation</b><span class="badge">via outport data</span>
+   <small>delay×pan×level</small></div>
+  <canvas id="constel" height="230"></canvas>
+  <div class="cap">Each dot = one delay tap: <b>X</b> = delay time, <b>Y</b> = pan, <b>size/brightness</b> = level. Draws the <b>Gait directly</b> — switch modes and watch the pattern reshape; <b>Evolve</b> drifts it; <b>Freeze</b> holds it.</div>
+ </div>
+
+ <div class="panel wide">
+  <div class="ph"><b>4 · Support readouts</b><span class="badge">via outport data</span>
+   <small>juce::dsp::FFT · ff_meters</small></div>
+  <canvas id="spectrum" height="90"></canvas>
+  <div class="cap"><span class="k" style="background:var(--tap)"></span><b>Spectrum</b> — see the harmonic fattening from Cloud + Diffusion. Alongside it in the real UI: an <b>Everlast energy</b> meter (how alive the feedback is) and a <b>Freeze</b> lamp — both cheap scalar outports.</div>
+ </div>
+
+</div>
+
+<div id="foot">
+ What's reachable: only <b>dry input</b> + <b>final output</b> are sample-accurate at the JUCE layer (panel 1, free). Everything internal —
+ per-tap level/pan, wet/dry RMS, feedback energy, freeze state — must be emitted from gen as <b>control-rate outport data</b> (~30 Hz), since a
+ stereo Effect can't add audio metering channels. That one additive engine change (no param-set change, no DSP refactor) unlocks panels 2–4.
+ Draw from a lock-free FIFO on a message-thread Timer — never from the audio thread.
+</div>
+</div>
+
+<script>
+(function(){
+const root=document.documentElement, tb=document.getElementById('themebtn');
+tb.onclick=()=>{const cur=root.getAttribute('data-theme')|| (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+ root.setAttribute('data-theme', cur==='dark'?'light':'dark');};
+const cv=v=>getComputedStyle(root).getPropertyValue(v).trim();
+
+// hi-dpi canvas setup
+function fit(c){const r=c.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1);
+ c.width=r.width*d;c.height=c.height*d;const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);
+ c._w=r.width;c._h=c.height/d;return x;}
+const scope=document.getElementById('scope'),gonio=document.getElementById('gonio'),
+ constel=document.getElementById('constel'),spec=document.getElementById('spectrum');
+let sx,gx,cx,px;
+function sizeAll(){sx=fit(scope);gx=fit(gonio);cx=fit(constel);px=fit(spec);}
+addEventListener('resize',()=>{[scope,gonio,constel,spec].forEach(c=>{c.width=c.width;});
+ scope.height=150;gonio.height=230;constel.height=230;spec.height=90;sizeAll();});
+
+const ui={gait:'even',pan:'spread',evolve:false,freeze:false,ntap:12,fbk:0.6};
+document.getElementById('gait').onchange=e=>ui.gait=e.target.value;
+document.getElementById('pan').onchange=e=>ui.pan=e.target.value;
+document.getElementById('evolve').onclick=e=>{ui.evolve=!ui.evolve;e.target.classList.toggle('on',ui.evolve);};
+document.getElementById('freeze').onclick=e=>{ui.freeze=!ui.freeze;e.target.classList.toggle('on',ui.freeze);};
+
+const N=12, rnd=[]; for(let i=0;i<N;i++)rnd.push(Math.random()*2-1);
+const rndp=[]; for(let i=0;i<N;i++)rndp.push(Math.random()*2-1);
+function reroll(){for(let i=0;i<N;i++){rnd[i]=Math.random()*2-1;rndp[i]=Math.random()*2-1;}}
+
+// tap model: returns [{t:0..1 delaytime, pan:-1..1, lvl:0..1}]
+function taps(drift){
+ let A=1,B=1;
+ const g=ui.gait;
+ const out=[];
+ for(let i=0;i<N;i++){
+  let ratio;
+  if(g==='rush'){A=0.28+drift*0.05;ratio=Math.pow(2, A*i);}          // exponential
+  else if(g==='march'){ratio=1+ (1+drift)*i;}                         // linear
+  else if(g==='divide'){ratio=(i+1);}                                 // harmonic series
+  else if(g==='rubato'){ratio=1+ (i)+ rnd[i]*3;}                      // random held
+  else{ratio=1+ i*(1+drift*0.3);}                                     // even spread
+  let t=ratio/ (g==='rush'?Math.pow(2,A*(N-1)):(N*1.2));             // normalize 0..1
+  t=Math.max(0,Math.min(1,t));
+  let pan;
+  if(ui.pan==='scatter')pan=rndp[i]*0.95;
+  else pan=(i/(N-1))*2-1;                                             // spread L->R
+  const lvl=Math.pow(ui.fbk, i*0.35)* (i<ui.ntap?1:0.12);            // feedback decay
+  out.push({t,pan,lvl});
+ }
+ return out;
+}
+
+let held=null, phase=0, tprev=performance.now();
+// scope ring buffers
+const SB=480; const bin=new Float32Array(SB), bout=new Float32Array(SB); let sp=0;
+let pluck=0;
+// spectrum bars
+const NB=48, sb=new Float32Array(NB);
+
+function frame(now){
+ const dt=Math.min(50,now-tprev); tprev=now; phase+=dt*0.001;
+ const drift= ui.evolve ? Math.sin(phase*0.6)*1.4 : 0;
+ let T = ui.freeze ? (held||(held=taps(drift))) : (held=null, taps(drift));
+
+ // ---- panel 1: scope ----
+ pluck-=dt*0.0012; if(pluck<0){pluck=1;} // retrigger
+ const inS = Math.sin(phase*38)*Math.exp(-((1-pluck))*3.5)*0.8;
+ let outS=inS*0.5;
+ for(const tp of T) outS += Math.sin((phase - tp.t*0.4)*38)*Math.exp(-((1-pluck))*2.0)*tp.lvl*0.16;
+ outS=Math.tanh(outS);
+ bin[sp]=inS; bout[sp]=outS; sp=(sp+1)%SB;
+ drawScope();
+
+ drawGonio(T);
+ drawConstel(T, drift);
+ drawSpec(T);
+ requestAnimationFrame(frame);
+}
+
+function grid(x,w,h,rows,cols){x.strokeStyle=cv('--grid');x.lineWidth=1;x.globalAlpha=.7;
+ for(let i=1;i<rows;i++){const y=h*i/rows;x.beginPath();x.moveTo(0,y);x.lineTo(w,y);x.stroke();}
+ for(let i=1;i<cols;i++){const xx=w*i/cols;x.beginPath();x.moveTo(xx,0);x.lineTo(xx,h);x.stroke();}
+ x.globalAlpha=1;}
+
+function trace(x,buf,w,h,color){x.strokeStyle=color;x.lineWidth=1.6;x.beginPath();
+ for(let i=0;i<SB;i++){const idx=(sp+i)%SB;const xx=i/SB*w, yy=h/2 - buf[idx]*h*0.42;
+  i?x.lineTo(xx,yy):x.moveTo(xx,yy);}x.stroke();}
+function drawScope(){const w=scope._w,h=scope._h;sx.clearRect(0,0,w,h);grid(sx,w,h,4,8);
+ trace(sx,bin,w,h,cv('--in'));trace(sx,bout,w,h,cv('--out'));}
+
+// panel 2: goniometer — plot L vs R rotated 45deg, faded trail
+const gpts=[];
+function drawGonio(T){const w=gonio._w,h=gonio._h,cxp=w/2,cyp=h/2,R=Math.min(w,h)*0.42;
+ gx.fillStyle=cv('--surface-2');gx.globalAlpha=.18;gx.fillRect(0,0,w,h);gx.globalAlpha=1;
+ gx.strokeStyle=cv('--grid');gx.lineWidth=1;gx.globalAlpha=.7;
+ gx.beginPath();gx.moveTo(cxp-R,cyp);gx.lineTo(cxp+R,cyp);gx.moveTo(cxp,cyp-R);gx.lineTo(cxp,cyp+R);gx.stroke();
+ gx.beginPath();gx.arc(cxp,cyp,R,0,7);gx.stroke();gx.globalAlpha=1;
+ gx.font='9px '+cv('--font-mono');gx.fillStyle=cv('--text-muted');gx.fillText('L',cxp-R-9,cyp+3);gx.fillText('R',cxp+R+3,cyp+3);gx.fillText('M',cxp-3,cyp-R-4);
+ // generate points: input (mono) + each tap panned
+ for(let k=0;k<6;k++){const ph=phase*40 - k*0.15;const s=Math.sin(ph)*0.6;
+  let L=s, Rr=s; // input mono contribution
+  for(const tp of T){const l=Math.sqrt((1-(tp.pan+1)/2)), r=Math.sqrt((tp.pan+1)/2);
+   const sig=Math.sin(ph - tp.t*3)*tp.lvl*0.5; L+=sig*l; Rr+=sig*r;}
+  gpts.push([L,Rr]);}
+ while(gpts.length>420)gpts.shift();
+ for(let i=0;i<gpts.length;i++){const[L,Rr]=gpts[i];const a=i/gpts.length;
+  const X=cxp+(L-Rr)/2*R*0.62, Y=cyp-(L+Rr)/2*R*0.62;
+  gx.fillStyle=cv('--tap');gx.globalAlpha=a*0.7;gx.beginPath();gx.arc(X,Y,1.5,0,7);gx.fill();}
+ gx.globalAlpha=1;}
+
+// panel 3: constellation
+function drawConstel(T,drift){const w=constel._w,h=constel._h,pad=22;
+ cx.clearRect(0,0,w,h);grid(cx,w,h,4,6);
+ cx.font='9px '+cv('--font-mono');cx.fillStyle=cv('--text-muted');
+ cx.fillText('short  ← delay →  long',pad,h-6);
+ cx.save();cx.translate(10,h/2);cx.rotate(-Math.PI/2);cx.fillText('L ← pan → R',-24,0);cx.restore();
+ for(let i=0;i<T.length;i++){const tp=T[i];
+  const X=pad+ tp.t*(w-pad*1.5);
+  const Y=h/2 - tp.pan*(h/2-pad);
+  const rr=2+tp.lvl*9;
+  cx.beginPath();cx.arc(X,Y,rr,0,7);
+  cx.fillStyle=cv('--tap');cx.globalAlpha=0.25+tp.lvl*0.7;cx.fill();
+  cx.globalAlpha=1;cx.strokeStyle=cv('--tap');cx.lineWidth=1;cx.stroke();
+  if(ui.freeze){cx.globalAlpha=.5;cx.beginPath();cx.arc(X,Y,rr+4,0,7);cx.stroke();cx.globalAlpha=1;}}
+ if(ui.freeze){cx.fillStyle=cv('--scan');cx.font='bold 9px '+cv('--font-mono');cx.fillText('❄ FROZEN',w-64,16);}}
+
+// panel 4: spectrum
+function drawSpec(T){const w=spec._w,h=spec._h;px.clearRect(0,0,w,h);grid(px,w,h,3,12);
+ for(let b=0;b<NB;b++){let target=Math.exp(-b*0.08)*0.5; // base tone
+  for(const tp of T)target+=tp.lvl*Math.exp(-Math.pow(b-(2+tp.t*NB*0.7),2)*0.03)*0.12; // harmonics
+  target=Math.min(1,target*(0.7+Math.sin(phase*3+b)*0.06));
+  sb[b]+=(target-sb[b])*0.2;
+  const bw=w/NB, x0=b*bw, bh=sb[b]*h*0.9;
+  px.fillStyle=cv('--tap');px.globalAlpha=0.35+sb[b]*0.6;
+  px.fillRect(x0+1,h-bh,bw-2,bh);px.globalAlpha=1;}}
+
+document.getElementById('ntap').textContent=ui.ntap;
+document.getElementById('fbk').textContent=ui.fbk;
+sizeAll(); requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

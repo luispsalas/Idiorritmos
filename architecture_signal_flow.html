@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>mc TEXTURES — signal-flow architecture (v1.3)</title>
+<title>IDIORRITMOS — signal-flow architecture (v1.3.2)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 :root{
@@ -21,8 +21,8 @@ p.sub{font-family:var(--font-mono);color:var(--text-muted);font-size:11px;text-a
 </style>
 </head>
 <body>
-<h1>mc TEXTURES — signal-flow architecture</h1>
-<p class="sub">engine v1.3 · 48 params · 2026-07-01 · hover/click a network chip to trace implicit interconnections</p>
+<h1>IDIORRITMOS — signal-flow architecture</h1>
+<p class="sub">mc TEXTURES engine v1.3.2 · 47 params · 2026-07-08 · hover/click a network chip to trace implicit interconnections</p>
 <div id="wrap" style="max-width:780px;margin:0 auto;font-family:var(--font-sans);color:var(--text-primary);position:relative;padding:0 56px 8px 64px">
 <style>
 #wrap .blk{position:relative;background:var(--surface-1);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:0 auto;max-width:520px}
@@ -71,10 +71,10 @@ p.sub{font-family:var(--font-mono);color:var(--text-muted);font-size:11px;text-a
 <div class="arr">▼ <small>wet only</small></div>
 <div class="blk"><div class="bt">CRUSH</div><div class="bs">crushbits · downsamp (dry stays clean)</div></div>
 <div class="arr">▼</div>
-<div class="blk" id="mixblk"><div class="bt">MIX dry / wet</div><div class="bs">mix — dry follows source (input or cloud)</div></div>
+<div class="blk" id="mixblk"><div class="bt">MIX dry / wet</div><div class="bs">mix — dry = UNTOUCHED input (v1.3.2: Mix governs ALL processing · 0 = clean bypass)</div></div>
 <div class="arr">▼</div>
 <div class="row2">
- <div class="blk" data-nets="sync"><div class="bt">GATE</div><div class="bs">gateon · gatediv · gatedepth · gateduty — always beat-relative</div></div>
+ <div class="blk" data-nets="sync"><div class="bt">GATE</div><div class="bs">gateon · gatediv · gatedepth · gateduty — beat-relative · WET leg only (v1.3.2: dry passes clean)</div></div>
  <div class="blk" data-nets="panic"><div class="bt">PANIC FADE</div><div class="bs">click-free mute + buffer flush</div></div>
 </div>
 <div class="arr">▼</div>
@@ -112,7 +112,7 @@ function draw(){
  const svg=document.getElementById('rail'),wr=wrap.getBoundingClientRect();
  const R=el=>{const r=el.getBoundingClientRect();return{l:r.left-wr.left,r:r.right-wr.left,t:r.top-wr.top,b:r.bottom-wr.top,cy:r.top-wr.top+r.height/2};};
  const wh=R(document.getElementById('writehead')),lr=R(document.getElementById('loopret'));
- const sc=R(document.getElementById('srcblk')),mx=R(document.getElementById('mixblk'));
+ const sc=R(document.getElementById('ain')),mx=R(document.getElementById('mixblk'));
  const x1=lr.l,x2=wh.l,xr=Math.min(x1,x2)-30;
  const dx1=sc.r,dx2=mx.r,dxr=Math.max(dx1,dx2)+30;
  svg.setAttribute('viewBox','0 0 '+wr.width+' '+wr.height);

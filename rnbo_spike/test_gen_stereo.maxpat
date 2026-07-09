@@ -4311,6 +4311,87 @@
      ],
      "text": "PATINANDO"
     }
+   },
+   {
+    "box": {
+     "id": "src_lbl",
+     "maxclass": "comment",
+     "numinlets": 1,
+     "numoutlets": 0,
+     "patching_rect": [
+      40,
+      1360,
+      900,
+      18
+     ],
+     "text": "SOURCE PRESETS (simple, non-persona) - dial MIX for live+texture blend. Harmonic Shadows: melodic/guitar. Vocal Halo: voice (spoken/sung)."
+    }
+   },
+   {
+    "box": {
+     "id": "srclbl_harmonicshadows",
+     "maxclass": "comment",
+     "numinlets": 1,
+     "numoutlets": 0,
+     "patching_rect": [
+      40,
+      1391,
+      150,
+      20
+     ],
+     "text": "Harmonic Shadows"
+    }
+   },
+   {
+    "box": {
+     "id": "srcmsg_harmonicshadows",
+     "maxclass": "message",
+     "numinlets": 2,
+     "numoutlets": 1,
+     "outlettype": [
+      ""
+     ],
+     "patching_rect": [
+      200,
+      1384,
+      940,
+      34
+     ],
+     "text": "cloud 0.3, playspeed 1, spmode 4, spA 1, spB 1, cloudhold 0, sync 0, bpm 120, tapdiv 0.5, lfodiv 1, freezediv 1, tapcount 10, basems 140, mode 4, A 1, B 1, fbk 0.62, lopass 6500, freeze 0, freezelen 2000, lforate 0.15, lfomode 6, lfoA 1, lfoB 2, lfodepth 0.15, lfoshape 0, morph 0, gateon 0, gatediv 0.25, gatedepth 1, gateduty 0.5, crushbits 16, downsamp 1, evolve 0.2, evolverate 0.03, width 1, panmode 6, panA -1, panB 1, mix 0.4, outgain 1, diffusion 0.4, tapsync 1, lfosync 1, freezesync 1"
+    }
+   },
+   {
+    "box": {
+     "id": "srclbl_vocalhalo",
+     "maxclass": "comment",
+     "numinlets": 1,
+     "numoutlets": 0,
+     "patching_rect": [
+      40,
+      1435,
+      150,
+      20
+     ],
+     "text": "Vocal Halo"
+    }
+   },
+   {
+    "box": {
+     "id": "srcmsg_vocalhalo",
+     "maxclass": "message",
+     "numinlets": 2,
+     "numoutlets": 1,
+     "outlettype": [
+      ""
+     ],
+     "patching_rect": [
+      200,
+      1428,
+      940,
+      34
+     ],
+     "text": "cloud 0.5, playspeed 1, spmode 4, spA 0.5, spB 1, cloudhold 0, sync 0, bpm 120, tapdiv 0.5, lfodiv 1, freezediv 1, tapcount 10, basems 320, mode 6, A 1, B 8, fbk 0.7, lopass 5000, freeze 0, freezelen 2000, lforate 0.1, lfomode 6, lfoA 0.5, lfoB 2, lfodepth 0.25, lfoshape 0, morph 0, gateon 0, gatediv 0.25, gatedepth 1, gateduty 0.5, crushbits 16, downsamp 1, evolve 0.3, evolverate 0.04, width 1, panmode 7, panA 0.8, panB 0.5, mix 0.5, outgain 1, diffusion 0.6, tapsync 1, lfosync 1, freezesync 1"
+    }
    }
   ],
   "lines": [
@@ -6969,6 +7050,30 @@
     "patchline": {
      "source": [
       "amsg_skater",
+      0
+     ],
+     "destination": [
+      "gen",
+      0
+     ]
+    }
+   },
+   {
+    "patchline": {
+     "source": [
+      "srcmsg_harmonicshadows",
+      0
+     ],
+     "destination": [
+      "gen",
+      0
+     ]
+    }
+   },
+   {
+    "patchline": {
+     "source": [
+      "srcmsg_vocalhalo",
       0
      ],
      "destination": [
