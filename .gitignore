@@ -9,3 +9,7 @@ audio/*.aif
 
 # JUCE Tier-2 build environment (rnbo.example.juce template + JUCE submodule) — not part of the plugin source
 juce/
+
+# Internal project-management doc — never publish (release strategy, trademark-gap notes,
+# academic knowledge-base linkage, unverified-preset candor). Local source of truth only.
+BACKLOG.md
