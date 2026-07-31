@@ -208,4 +208,13 @@ Requirements: **Max 9.1+** with **RNBO 1.4+** (license required to export), Xcod
 
 ## License
 
-Not yet licensed — this repository is private during pre-release. The intent is to publish IDIORRITMOS under an open-source license at release (candidates under evaluation; note that RNBO-exported C++ is subject to Cycling '74's RNBO license terms, which permit distributing compiled plugins and released source under their conditions).
+The original source of IDIORRITMOS — the Max/`gen~` patch and harnesses, the plugin editor, build configuration, factory presets, mockups, and documentation — is released under the **MIT License** (see [`LICENSE`](LICENSE)). Use it, fork it, build on it.
+
+The bundled RNBO components keep Cycling '74's own terms (their notices are retained in-file):
+
+- **RNBO engine / runtime** (`juce/export/rnbo/`) — © Cycling '74, **MIT**.
+- **RNBO-generated code** (`juce/export/rnbo_source.cpp`, produced from the patch) — © Cycling '74, **dual-licensed** under the *Cycling '74 License for Max-Generated Code for Export* or **GPLv3**. Free for non-commercial, educational, and creative use; commercial distribution is granted free of charge to entities under \$200k annual revenue/funding (above that, contact Cycling '74). Open-source distribution — like this — is expressly permitted.
+
+In short: the plugin's own code is MIT and free to reuse; the bundled RNBO runtime and generated code stay under Cycling '74's terms, which allow this open-source release.
+
+> Note: the repository is **private during pre-release** and goes public with the first tagged version.
