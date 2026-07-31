@@ -10,7 +10,9 @@ IDIORRITMOS is a stereo texture processor for your DAW (AU / VST3), built in Max
 
 ## The concept
 
-IDIORRITMOS grows out of *Prácticas Idiorítmicas* (Salas, 2021), a sound-art research project on how we perceive, interpret, and modulate rhythmic events in everyday life. Its core insight: **rhythm is not just timing — it reveals behavior, intention, and emotion.** The way someone washes dishes, walks, or speaks carries a rhythmic signature you can hear.
+IDIORRITMOS is built on a simple idea: **rhythm is not just timing — it reveals behavior, intention, and emotion.** The way someone washes dishes, walks, or speaks carries a rhythmic signature you can hear.
+
+The name comes from **idiorhythm** — *"one's own rhythm."* Pay attention to any everyday scene — footsteps in a hallway, rain on different surfaces, a room of overlapping conversations — and you notice many rhythms sounding at once, each keeping its own tempo, none locked to a shared beat, yet together they form a living texture. IDIORRITMOS works that way: it scatters your sound across many voices and gives each one *its own* rhythm — its own delay time, its own slow drift, its own speed — so what returns is a weave of independent pulses rather than a single, grid-locked echo. You can let those rhythms float freely in absolute time, or pull them onto your DAW's beat grid when you want them to lock together. That freedom to move *with* a groove or *outside* of it is the heart of the instrument.
 
 The plugin translates that idea into four **cause-human rhythmic personas** — named as gerunds, because each is an *action*, a way of moving through time. They organize its presets and its future interface:
 
@@ -122,7 +124,7 @@ Several controls share one **distribution engine** — the *Gait* — which shap
 
 | Control | Automation ID | Values | What it does |
 |---|---|---|---|
-| Grit | `idr/crushbits` | 1 – 16 bits (**16** = clean) | Bit-depth reduction on the wet path only. |
+| Grit | `idr/crushbits` | 1 – 16 bits (**16** = clean) | Bit-depth reduction on the wet path only. ⚠ The GUI **Grit slider is display-inverted**: 0 % = clean (16 bits), 100 % = brutal (1 bit) — the underlying parameter/automation range is unchanged. At 1 bit, quiet signals quantize to silence. |
 | Grain | `idr/downsamp` | 1 – 64 (**1** = full rate) | Sample-rate reduction / decimation, wet only. |
 
 ### Breath (autonomous drift)
@@ -202,7 +204,6 @@ Requirements: **Max 9.1+** with **RNBO 1.4+** (license required to export), Xcod
 
 - Built on the sonic character of the original **`mc` multichannel objects** experiments in Max/MSP — the "everlasting layers of sound" that give the texturizer its name.
 - The **capture cloud** concept and terminology trace to Haiku-style multi-speed playback experiments.
-- Conceptual framework: **_Prácticas Idiorítmicas_** — Luis Paulino Salas, Master's in Sound Art, Universitat de Barcelona, 2021 (advisor: Barbara Held).
 - Exported with **RNBO** by Cycling '74.
 
 ## License
