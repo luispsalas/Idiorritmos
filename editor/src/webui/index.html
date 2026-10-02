@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>IDIORRITMOS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+/* Locked dark theme — spike palette (blue on near-black). No light variant:
+   prefers-color-scheme follows macOS System Appearance, not the DAW skin. */
+:root{
+ --surface-0:#16161e;--surface-1:#1c1c26;--surface-2:#23232f;
+ --text-primary:#cdd0e0;--text-secondary:#a8adc4;--text-muted:#8a8ca6;
+ --border:#2a2a3a;--border-strong:#3a3b52;--border-stronger:#545677;
+ --font-sans:system-ui,-apple-system,"Segoe UI",sans-serif;--font-mono:ui-monospace,Menlo,monospace;
+ --meter1:#7ec8ff;--meter2:#4a86c8; --gait1:#7ec8ff;--gait2:#4a86c8;
+ --frz1:#7ec8ff;--frz2:#4a86c8;   --mrf1:#9fd4ff;--mrf2:#4a86c8;
+ --brth1:#7ec8ff;--brth2:#4a86c8; --rrl1:#7ec8ff;--rrl2:#4a86c8;
+ --grid:#262633; --in:#4a86c8; --out:#cfe4ff; --tap:#7ec8ff;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--surface-0);margin:0;padding:8px;font-family:var(--font-sans);color:var(--text-primary);overflow:hidden}
+#app{width:1170px;margin:0 auto;display:flex;flex-direction:column;gap:8px;transform-origin:top center}
+
+/* bars */
+.bar{display:flex;align-items:center;gap:12px;background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:8px 12px}
+.logo{font-weight:800;letter-spacing:1.5px;font-size:13px}
+.logo small{font-weight:400;color:var(--text-muted);letter-spacing:0;font-size:10px}
+.bar select{background:var(--surface-2);color:var(--text-primary);border:1px solid var(--border);border-radius:5px;padding:3px 4px;font-size:11px;max-width:190px}
+.meterbox{display:flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:11px;color:var(--text-secondary)}
+#bpmfield{width:48px;background:var(--surface-2);color:var(--text-primary);border:1px solid var(--border);border-radius:4px;font:inherit;padding:1px 4px;text-align:right}
+#bpmfield::-webkit-inner-spin-button{opacity:.5}
+.led{width:8px;height:8px;border-radius:50%;background:var(--border);display:inline-block;margin-left:2px}
+.led.on{background:var(--meter1);box-shadow:0 0 5px var(--meter1)}
+.panicbtn{background:var(--surface-2);border:1px solid var(--border-strong);color:var(--text-secondary);border-radius:6px;padding:4px 9px;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;margin-left:auto}
+.panicbtn:hover{border-color:#b0483a;color:#b0483a}
+#panic.on{background:#b0483a;color:#10121a;border-color:#b0483a}
+#bypass:hover{border-color:var(--meter1);color:var(--meter1)}
+#bypass.on{background:var(--meter1);color:#10121a;border-color:var(--meter1)}
+.idtgl{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-muted);cursor:pointer}
+
+/* grid-lock strip */
+#locks{display:flex;gap:0;padding:6px 12px}
+#locks .lk{flex:1;display:flex;align-items:center;gap:8px;justify-content:center;border-right:1px dashed var(--border)}
+#locks .lk:last-child{border-right:none}
+.tglrow{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:600}
+.tglrow input{accent-color:var(--meter2)}
+/* DETAILS: per-control IDs = floating hover tooltip (no layout reflow) */
+.lb,.tglrow,.chp{position:relative}
+.tglrow em,.lb em,.chp em{font-style:normal;font-family:var(--font-mono);font-size:8.5px;color:var(--text-secondary);
+ position:absolute;bottom:calc(100% + 3px);right:0;background:var(--surface-2);border:1px solid var(--border-strong);
+ border-radius:4px;padding:1px 5px;white-space:nowrap;opacity:0;pointer-events:none;z-index:30;box-shadow:0 1px 3px rgba(0,0,0,.18);transition:opacity .1s}
+body.showids .lb:hover em,body.showids .tglrow:hover em,body.showids .chp:hover em{opacity:1}
+#locks select{background:var(--surface-2);color:var(--text-primary);border:1px solid var(--border);border-radius:5px;padding:2px 3px;font-size:10.5px}
+
+/* main columns */
+#main{display:grid;grid-template-columns:148px 152px minmax(320px,1fr) 168px 252px;gap:8px;align-items:stretch}
+.panel{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:9px 10px;display:flex;flex-direction:column}
+h3{font-size:9.5px;letter-spacing:1.1px;margin:0 0 6px;color:var(--text-secondary);display:flex;align-items:center;gap:5px}
+h3 .dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+h3 small{margin-left:auto;font-weight:400;letter-spacing:0;color:var(--text-muted);font-size:8.5px}
+
+/* controls */
+.ctl{display:flex;flex-direction:column;gap:1px;margin:4px 0}
+.lb{font-size:10.5px;font-weight:600;display:flex;justify-content:space-between;align-items:baseline;gap:5px}
+.lb .hint{font-weight:400;color:var(--text-muted);font-size:8.5px}
+input[type=range]{width:100%;accent-color:var(--gait1);height:17px;margin:0}
+.panel select{width:100%;background:var(--surface-2);color:var(--text-primary);border:1px solid var(--border);border-radius:5px;padding:2px 3px;font-size:10.5px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+/* DETAILS: Gait formula caption = space always reserved, only opacity toggles (no reflow) */
+.gaithint{font-family:var(--font-mono);font-size:8.5px;color:var(--text-muted);line-height:1.35;margin-top:2px;opacity:0;transition:opacity .12s}
+body.showids .gaithint{opacity:1}
+.sep{border-top:1px dashed var(--border);margin:7px 0}
+
+/* perform */
+.frz{width:100%;height:52px;border-radius:9px;border:2px solid var(--frz1);background:var(--surface-2);color:var(--frz1);font-size:13px;font-weight:800;letter-spacing:2px;cursor:pointer}
+.frz.on{background:var(--frz1);color:#10121a;border-color:var(--frz1)}
+.frznote{font-size:8px;color:var(--text-muted);text-align:center;margin:3px 0 0;line-height:1.35}
+.chp{width:100%;height:38px;border-radius:9px;border:2px solid var(--meter1);background:var(--surface-2);color:var(--meter1);font-size:12px;font-weight:800;letter-spacing:2px;cursor:pointer}
+.chp.on{background:var(--meter1);color:#10121a;border-color:var(--meter1)}
+.morphctl input{accent-color:var(--mrf2);background:linear-gradient(90deg,var(--frz1),var(--mrf1));border-radius:99px}
+
+/* canvases + meters */
+canvas{width:100%;display:block;border-radius:6px;background:var(--surface-2);border:1px solid var(--border)}
+.vcap{font-family:var(--font-mono);font-size:8px;color:var(--text-muted);margin:2px 0 4px;line-height:1.35}
+.fbwrap{height:6px;border:1px solid var(--border);border-radius:99px;background:var(--surface-2);overflow:hidden;margin-top:2px}
+#fbmeter{height:100%;background:var(--frz1);width:50%}
+
+/* master bar */
+.foot .knobwrap{display:flex;flex-direction:column;align-items:center;gap:1px}
+.knob{width:42px;height:42px;border-radius:50%;border:2px solid var(--border-strong);background:var(--surface-2);position:relative;cursor:ns-resize;touch-action:none;user-select:none}
+.knob .kp{position:absolute;left:50%;top:3px;width:3px;height:13px;margin-left:-1.5px;background:var(--text-primary);border-radius:2px;transform-origin:50% 18px}
+.kv{font-family:var(--font-mono);font-size:9px;color:var(--text-muted)}
+.fbtn{background:var(--surface-2);border:1px solid var(--border-strong);border-radius:6px;padding:5px 11px;font-size:10.5px;font-weight:700;cursor:pointer;color:var(--text-primary)}
+#scopewrap{flex:1;min-width:280px}
+.vu{display:flex;gap:2px;align-items:flex-end;height:20px}
+.vu span{width:5px;background:var(--brth1);border-radius:2px;animation:vu 1s ease-in-out infinite alternate}
+.vu span:nth-child(2){animation-delay:.2s}.vu span:nth-child(3){animation-delay:.45s}
+@keyframes vu{from{height:4px}to{height:18px}}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+<!-- HEADER -->
+<div class="bar">
+ <span class="logo">IDIORRITMOS <small>Rhythmic Textures</small></span>
+ <select id="preset" title="Factory bank: personas · scenes · sources (RNBO snapshots)">
+  <optgroup label="Personas">
+   <option>Percutiendo</option><option>Bailando</option><option>Hablando</option><option>Patinando</option>
+  </optgroup>
+  <optgroup label="Scenes">
+   <option>Murmur · Bailando×Hablando</option><option>Stutter Step · Percutiendo×Patinando</option>
+   <option>Pavement · Patinando×Hablando</option><option>Vigil · Bailando profundo</option>
+  </optgroup>
+  <optgroup label="Sources">
+   <option>Harmonic Shadows · guitar</option><option>Vocal Halo · voice</option>
+  </optgroup>
+ </select>
+ <span class="tglrow"><input type="checkbox" checked id="sync"><label for="sync">METER LOCK <em>sync</em></label></span>
+ <div class="meterbox"><span><input id="bpmfield" type="number" min="20" max="300" step="0.1" value="120.0" title="Tempo — follows the host when METER LOCK is on and playing; editable (drag-wheel / spinner / type) to set the free-run tempo"> <b>·</b> BPM</span>
+  <span class="led on"></span><span class="led"></span><span class="led"></span><span class="led"></span></div>
+ <label class="idtgl" title="reveals each control's internal parameter ID and the per-Gait math (what A and B do in the selected mode)"><input type="checkbox" id="ids"> ⓘ DETAILS — IDs &amp; Gait formulas</label>
+ <label class="idtgl" title="uniform UI scale — the JUCE resizable spec: one base layout, everything (text included) scales together">⤢ SIZE
+  <select id="uiscale"><option value="fit" selected>Fit</option><option value="75">75%</option><option value="100">100%</option><option value="125">125%</option><option value="150">150%</option></select></label>
+ <button class="panicbtn" id="bypass" title="bypass — sets Mix to 0 (true clean bypass) and restores it on release">BYPASS</button>
+ <button class="panicbtn" id="panic" style="margin-left:0" title="panic — click-free fade to SILENCE + buffer flush; stays silent until clicked again">PANIC</button>
+</div>
+
+<!-- GRID-LOCK STRIP (order mirrors the panels below: PERFORM/freeze on the left) -->
+<div class="bar" id="locks">
+ <div class="lk"><span class="tglrow"><input type="checkbox" checked id="flock"><label for="flock">Freeze Lock <em>freezesync</em></label></span>
+  <select data-p="freezediv" title="Freeze Div (freezediv)"><option>1/4</option><option>1/2</option><option selected>1 beat</option><option>2</option><option>4</option></select></div>
+ <div class="lk"><span class="tglrow"><input type="checkbox" checked id="plock"><label for="plock">Pulse Lock <em>tapsync</em></label></span>
+  <select data-p="tapdiv" title="Stride Div (tapdiv)"><option>1/16</option><option selected>1/8</option><option>1/4</option><option>1/2</option><option>1 beat</option><option>2</option><option>4</option></select></div>
+ <div class="lk"><span class="tglrow"><input type="checkbox" checked id="slock"><label for="slock">Sway Lock <em>lfosync</em></label></span>
+  <select data-p="lfodiv" title="Sway Div (lfodiv)"><option>1/4</option><option>1/2</option><option selected>1 beat</option><option>2</option><option>4</option><option>8</option></select></div>
+</div>
+
+<!-- MAIN: five columns -->
+<div id="main">
+
+ <!-- PERFORM -->
+ <div class="panel">
+  <h3><span class="dot" style="background:var(--frz1)"></span>PERFORM</h3>
+  <button class="frz" id="frz">FREEZE</button>
+  <div class="frznote">hold the captured loop ·<br>quantized to Freeze Div when locked</div>
+  <div class="ctl"><span class="lb">Freeze Window <em>freezelen</em></span>
+   <input type="range"></div>
+  <div class="sep"></div>
+  <div class="ctl morphctl"><span class="lb">MORPH <em>morph</em><span class="hint">texture→glitch</span></span>
+   <input type="range" id="morph"></div>
+  <div class="sep"></div>
+  <button class="chp" id="chop" title="rhythmic amplitude gate — chops the WET texture only (dry passes clean); watch the output trace below">CHOP <em>gateon</em></button>
+  <div class="ctl"><span class="lb">Chop Rate <em>gatediv</em></span>
+   <select data-p="gatediv"><option>1/32</option><option selected>1/16</option><option>1/8</option><option>1/4</option><option>1/2</option></select></div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">Depth <em>gatedepth</em></span><input type="range"></div>
+   <div class="ctl"><span class="lb">Length <em>gateduty</em></span><input type="range"></div>
+  </div>
+ </div>
+
+ <!-- VOICES -->
+ <div class="panel">
+  <h3><span class="dot" style="background:var(--brth1)"></span>VOICES <small>cloud</small></h3>
+  <div class="ctl"><span class="lb">Cloud <em>cloud</em></span><input type="range" id="cloud"></div>
+  <div class="ctl"><span class="lb">Cloud Speed <em>playspeed</em></span><input type="range"></div>
+  <div class="ctl"><span class="lb">Cloud Gait <em>spmode</em></span>
+   <select class="gaitsel"><option>Rush · exp</option><option>Rush² · scaled</option><option>March · incr</option><option>Divide · harm</option><option>Multiply · subharm</option><option selected>Even · spread</option><option>Rubato · deviate</option></select><div class="gaithint"></div></div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">A <em>spA</em></span><input type="range"></div>
+   <div class="ctl"><span class="lb">B <em>spB</em></span><input type="range"></div>
+  </div>
+  <div class="tglrow" style="margin-top:4px"><input type="checkbox" id="chold"><label for="chold">Cloud Hold <em>cloudhold</em></label></div>
+  <div class="sep"></div>
+  <h3><span class="dot" style="background:var(--brth1)"></span>BREATH</h3>
+  <div class="ctl"><span class="lb">Breathe <em>evolve</em></span><input type="range" id="evolve"></div>
+  <div class="ctl"><span class="lb">Breath Rate <em>evolverate</em></span><input type="range"></div>
+ </div>
+
+ <!-- PULSES + constellation + spectrum -->
+ <div class="panel">
+  <h3><span class="dot" style="background:var(--gait1)"></span>PULSES <small>12-tap matrix · dots = taps: X delay · Y pan · size level</small></h3>
+  <canvas id="constel" height="132"></canvas>
+  <div class="vcap">TAP CONSTELLATION — draws the Gait live: switch modes, thin Pulses, ride Morph, breathe with Evolve; ❄ Freeze holds it · Re-roll re-scatters Rubato</div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">Pulses <em>tapcount</em></span><input type="range" id="tapcount"></div>
+   <div class="ctl"><span class="lb">Stride <em>basems</em><span class="hint">ms·div locked</span></span><input type="range"></div>
+  </div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">Gait <em>mode</em></span>
+    <select class="gaitsel" id="gaitTap"><option>Rush · exp</option><option>Rush² · scaled</option><option>March · incr</option><option>Divide · harm</option><option>Multiply · subharm</option><option selected>Even · spread</option><option>Rubato · deviate</option></select><div class="gaithint"></div></div>
+   <div class="duo">
+    <div class="ctl"><span class="lb">A <em>A</em></span><input type="range"></div>
+    <div class="ctl"><span class="lb">B <em>B</em></span><input type="range"></div>
+   </div>
+  </div>
+  <div class="ctl"><span class="lb">Everlast <em>fbk</em><span class="hint">loop energy ↓</span></span>
+   <input type="range" id="fbk">
+   <div class="fbwrap" title="Everlast energy — how alive the feedback loop is"><div id="fbmeter"></div></div></div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">Tone <em>lopass</em></span><input type="range" id="tone"></div>
+   <div class="ctl"><span class="lb">Wash <em>diffusion</em></span><input type="range" id="wash"></div>
+  </div>
+  <canvas id="spectrum" height="48"></canvas>
+  <div class="vcap">LOOP SPECTRUM — darker with Tone, smears with Wash, sustains with Everlast</div>
+ </div>
+
+ <!-- SWAY -->
+ <div class="panel">
+  <h3><span class="dot" style="background:var(--brth1)"></span>SWAY <small>per-pulse motion</small></h3>
+  <div class="ctl"><span class="lb">Sway Rate <em>lforate</em></span><input type="range"></div>
+  <div class="ctl"><span class="lb">Sway Depth <em>lfodepth</em></span><input type="range" id="swdepth"></div>
+  <div class="ctl"><span class="lb">Sway Gait <em>lfomode</em></span>
+   <select class="gaitsel"><option>Rush · exp</option><option>Rush² · scaled</option><option>March · incr</option><option>Divide · harm</option><option>Multiply · subharm</option><option selected>Even · spread</option><option>Rubato · deviate</option></select><div class="gaithint"></div></div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">A <em>lfoA</em></span><input type="range"></div>
+   <div class="ctl"><span class="lb">B <em>lfoB</em></span><input type="range"></div>
+  </div>
+  <div class="ctl"><span class="lb">Sway Shape <em>lfoshape</em></span>
+   <select id="swshape"><option selected>Flow · sine</option><option>Steps · S&amp;H</option></select></div>
+  <div class="vcap" style="margin-top:6px">Sway wobbles the constellation dots — raise Depth and switch Flow↔Steps to see smooth vs stepped motion.</div>
+ </div>
+
+ <!-- SPACE + gonio + GRIT -->
+ <div class="panel">
+  <h3><span class="dot" style="background:var(--rrl1)"></span>SPACE <small>L↔R vs mid — the width the engine builds</small></h3>
+  <canvas id="gonio" height="128"></canvas>
+  <div class="vcap">GONIOMETER — stereo Lissajous; opens with Width, morphs with Mix &amp; Morph.</div>
+  <div class="ctl"><span class="lb">Width <em>width</em></span><input type="range" id="width"></div>
+  <div class="ctl"><span class="lb">Placement <em>panmode</em></span>
+   <select id="place"><option selected>Spread · even</option><option>Scatter · deviate</option></select>
+   <div class="gaithint">Spread: pan A→B across pulses · Scatter: B=center, A=spread (held · RE-ROLL)</div></div>
+  <div class="duo">
+   <div class="ctl"><span class="lb">Place A <em>panA</em></span><input type="range"></div>
+   <div class="ctl"><span class="lb">Place B <em>panB</em></span><input type="range"></div>
+  </div>
+  <div class="sep"></div>
+  <h3><span class="dot" style="background:var(--rrl1)"></span>GRIT <small>wet only</small></h3>
+  <div class="duo">
+   <div class="ctl"><span class="lb">Grit <em>crushbits</em></span><input type="range"></div>
+   <div class="ctl"><span class="lb">Grain <em>downsamp</em></span><input type="range"></div>
+  </div>
+ </div>
+
+</div>
+
+<!-- MASTER BAR: scope pairs with Mix -->
+<div class="bar foot">
+ <button class="fbtn" id="reroll" title="re-rolls all three random-held tables: taps + pan + cloud speeds">⚄ RE-ROLL</button>
+ <div id="scopewrap">
+  <canvas id="scope" height="56"></canvas>
+  <div class="vcap"><span style="color:var(--in)">▬</span> input · <span style="color:var(--out)">▬</span> output — watch the texture bloom as you open MIX; CHOP carves only the wet side</div>
+ </div>
+ <div class="knobwrap" title="untouched input ↔ full texture — governs ALL processing incl. Cloud (0 = clean bypass)">
+  <span class="lb">Mix <em>mix</em></span>
+  <div class="knob" id="mixknob"><div class="kp"></div></div><span class="kv"></span>
+ </div>
+ <div class="knobwrap" title="master output, pre soft-limiter (100% = unity)">
+  <span class="lb">Output <em>outgain</em></span>
+  <div class="knob" id="outknob"><div class="kp"></div></div><span class="kv"></span>
+ </div>
+ <div class="vu"><span></span><span></span><span></span></div>
+</div>
+
+</div>
+
+<script type="module" src="./main.js"></script>
+</body>
+</html>
