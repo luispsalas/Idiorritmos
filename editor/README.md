@@ -43,4 +43,4 @@ The plugin first tries to load its page from a dev server at `http://localhost:3
 
 ## License
 
-These files are modified copies of template files. The template repository carries no license file, and JUCE is dual-licensed (AGPLv3 or a commercial JUCE license). See the main README's License section.
+These files are modified copies of template files, © Cycling '74 under the MIT License; their notice is in [`LICENSE-rnbo.example.juce`](LICENSE-rnbo.example.juce). JUCE is used under its free Starter license. See the main README's License section.

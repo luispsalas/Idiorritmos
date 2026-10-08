@@ -118,14 +118,15 @@ The **plugin with the custom IDIORRITMOS interface** is a JUCE build on Cycling 
 
 ## License
 
-The original source of IDIORRITMOS — the Max/`gen~` patch and harnesses, the plugin editor, build configuration, factory presets, mockups, and documentation — is released under the **MIT License** (see [`LICENSE`](LICENSE)). Use it, fork it, build on it.
+The original source of IDIORRITMOS — the Max/`gen~` patch and harnesses, the interface code written for this project, factory presets, mockups, and documentation — is released under the **MIT License** (see [`LICENSE`](LICENSE)). Use it, fork it, build on it.
 
-A plugin build includes RNBO components that keep Cycling '74's own terms. The RNBO export generates them into the build folder; they are not stored in this repository, and their notices are retained in-file:
+Third-party components keep their own terms. The RNBO parts are generated into the build folder by the export and are not stored in this repository; their notices are retained in-file:
 
 - **RNBO engine / runtime** (`export/rnbo/`) — © Cycling '74, **MIT**.
 - **RNBO-generated code** (`export/rnbo_source.cpp`, produced from the patch) — © Cycling '74, **dual-licensed** under the *Cycling '74 License for Max-Generated Code for Export* or **GPLv3**. Free for non-commercial, educational, and creative use; commercial distribution is granted free of charge to entities under \$200k annual revenue/funding (above that, contact Cycling '74). Open-source distribution — like this — is expressly permitted.
-- **Custom interface build** (`editor/`): these files are modified copies of files from Cycling '74's `rnbo.example.juce` template, which carries no license file, and the build links **JUCE 8**, dual-licensed under **AGPLv3** or a commercial JUCE license. Both need settling before a binary release; the MIT grant above covers only the original work.
+- **Interface template** (`editor/`): these files are modified copies of files from Cycling '74's `rnbo.example.juce` template — © Cycling '74, **MIT** (notice in [`editor/LICENSE-rnbo.example.juce`](editor/LICENSE-rnbo.example.juce)).
+- **JUCE 8** (linked by the plugin build): dual-licensed **AGPLv3** or the JUCE 8 license agreement. IDIORRITMOS is built under JUCE's free **Starter** license, which is why the RNBO-generated code uses Cycling '74's license rather than its GPLv3 option.
 
-In short: the plugin's own code is MIT and free to reuse; the RNBO runtime and generated code stay under Cycling '74's terms, which allow open-source release; the custom-interface build has the open questions noted above.
+In short: the plugin's own code is MIT and free to reuse; the RNBO runtime and generated code stay under Cycling '74's terms, which allow open-source release; JUCE is used under its free Starter license.
 
 > Note: the repository is **private during pre-release** and goes public with the first tagged version.
