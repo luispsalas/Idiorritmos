@@ -4,6 +4,11 @@
 
 IDIORRITMOS is a stereo texture processor for your DAW (AU / VST3), built in Max/MSP `gen~` and exported with RNBO. It turns any input, whether a synth pad, a guitar, a voice or a field recording, into sustained, evolving beds of sound, and then lets you carve those beds rhythmically: frozen textures, grid-locked stutters, tempo-synced chops, and slow autonomous drift.
 
+<p align="center">
+  <img src="docs/images/plugin.png" alt="The IDIORRITMOS plugin window: a preset menu and tempo lock across the top, then panels for Perform (Freeze, Morph, Chop), Voices, Pulses with the tap display, Sway, and Space with the stereo display, and a waveform strip with Mix and Output knobs along the bottom." width="900">
+  <br><sub>The IDIORRITMOS interface, shown without audio running.</sub>
+</p>
+
 > [!NOTE]
 > **Pre-release.** The engine (v1.3.3) is feature-complete. AU and VST3 builds pass Apple's `auval` check and run in Ableton Live and Logic Pro; the custom interface is in progress. The goal is to release IDIORRITMOS as open source.
 
