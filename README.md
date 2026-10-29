@@ -10,14 +10,14 @@ IDIORRITMOS is a stereo texture processor for your DAW (AU / VST3), built in Max
 </p>
 
 > [!NOTE]
-> **Pre-release.** The engine (v1.3.3) is feature-complete. AU and VST3 builds pass Apple's `auval` check and run in Ableton Live and Logic Pro; the custom interface is in progress. The goal is to release IDIORRITMOS as open source.
+> **Version 1, source-only for now.** The engine (v1.3.3), the factory presets and the custom interface are complete for version 1. AU and VST3 builds pass Apple's `auval` check and run in Ableton Live and Logic Pro. There are no prebuilt downloads yet, so using the plugin means building it from source, which needs Max with an RNBO license.
 
 | Start here | What you'll find |
 |---|---|
-| **[Install](#installing)** → | Put the plugin in your DAW |
+| **[Install](#installing)** → | Build the plugin from source and load it in your DAW |
 | **[Presets](#factory-bank)** → | Ten starting points, from rhythmic personas to instrument-ready sources |
 | **[Parameters](docs/PARAMETERS.md)** → | All 47 controls: what each one does, its range and default |
-| **[Build from source](#building-from-source)** → | Max/RNBO export and the plugin interface |
+| **[Interface](editor/README.md)** → | The custom plugin interface and how to build it |
 
 ---
 
@@ -75,22 +75,15 @@ All 47 controls are host-automatable. The full reference, including the *Gait* d
 
 ## Installing
 
-### Prebuilt plugin (once releases are published)
-
-1. Download the latest release for macOS (AU `.component` and/or VST3 `.vst3`).
-2. Copy to your user plugin folder:
-   - AU: `~/Library/Audio/Plug-Ins/Components/`
-   - VST3: `~/Library/Audio/Plug-Ins/VST3/`
-3. Rescan plugins in your DAW (Live: Preferences → Plug-Ins; Logic: restarts scan automatically).
-
-### Building from source
-
-There are two builds. The **plugin with the generic RNBO interface** needs only Max:
+There are no prebuilt downloads yet, so the plugin is built from source on macOS. There are two builds. The **plugin with the generic RNBO interface** needs only Max:
 
 1. Requirements: **Max 9.1+** with **RNBO 1.4+** (a license is required to export) and Xcode Command Line Tools (`xcode-select --install`).
 2. Open `engine/export_mc_textures_FIXED.maxpat` in Max. The `gen~` inside the `rnbo~` loads `texture_gen_stereo.gendsp` from the same folder.
 3. Optionally click each factory-bank row and capture named RNBO snapshots (the preset rows and capture instructions are embedded in the patch).
-4. Export via the RNBO sidebar: Audio Plugin target, type Effect, formats VST3 + AU, "Include Presets" checked, output to the user plugin folders above.
+4. Export via the RNBO sidebar: Audio Plugin target, type Effect, formats VST3 + AU, "Include Presets" checked, output to your user plugin folders:
+   - AU: `~/Library/Audio/Plug-Ins/Components/`
+   - VST3: `~/Library/Audio/Plug-Ins/VST3/`
+5. Rescan plugins in your DAW (Live: Preferences → Plug-Ins; Logic: restarts scan automatically).
 
 The **plugin with the custom IDIORRITMOS interface** is a JUCE build on Cycling '74's template; the steps are in [`editor/README.md`](editor/README.md).
 
@@ -110,7 +103,7 @@ The **plugin with the custom IDIORRITMOS interface** is a JUCE build on Cycling 
 
 ## Roadmap
 
-- **v1.0 release**: licensing review, interface polish, and the first tagged build with factory presets.
+- **Prebuilt downloads**: signed and notarized macOS builds, so the plugin can be installed without Max.
 - **MIDI Instrument build**: the same engine as a playable sampler (note-driven capture playback).
 - **Interface**: preset panel, visual polish, and a tap constellation driven by real per-tap levels (see `docs/design/gui_mockup_tier2.html`).
 - **Archetype phases**: personas as presets today; blendable persona "presence" macros next; generative per-persona rhythm engines after that.
@@ -133,5 +126,3 @@ Third-party components keep their own terms. The RNBO parts are generated into t
 - **JUCE 8** (linked by the plugin build): dual-licensed **AGPLv3** or the JUCE 8 license agreement. IDIORRITMOS is built under JUCE's free **Starter** license, which is why the RNBO-generated code uses Cycling '74's license rather than its GPLv3 option.
 
 In short: the plugin's own code is MIT and free to reuse; the RNBO runtime and generated code stay under Cycling '74's terms, which allow open-source release; JUCE is used under its free Starter license.
-
-> Note: the repository is **private during pre-release** and goes public with the first tagged version.

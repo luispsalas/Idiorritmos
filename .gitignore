@@ -11,6 +11,5 @@ audio/*.aif
 # Not source: the files we changed are kept in editor/.
 juce/
 
-# Internal project-management doc — never publish (release strategy, trademark-gap notes,
-# academic knowledge-base linkage, unverified-preset candor). Local source of truth only.
+# Internal working notes, kept local.
 BACKLOG.md
