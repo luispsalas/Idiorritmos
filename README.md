@@ -118,7 +118,7 @@ The **plugin with the custom IDIORRITMOS interface** is a JUCE build on Cycling 
 
 The **MIT License** (see [`LICENSE`](LICENSE)) covers the original source of IDIORRITMOS, meaning the Max/`gen~` patch and harnesses, the interface code written for this project, factory presets, mockups, and documentation. Use it, fork it, build on it.
 
-Third-party components keep their own terms. The RNBO parts are generated into the build folder by the export and are not stored in this repository; their notices are retained in-file:
+Third-party components keep their own terms, listed in full in [`THIRD-PARTY-NOTICES.txt`](THIRD-PARTY-NOTICES.txt). The RNBO parts are generated into the build folder by the export and are not stored in this repository; their notices are retained in-file:
 
 - **RNBO engine / runtime** (`export/rnbo/`) — © Cycling '74, **MIT**.
 - **RNBO-generated code** (`export/rnbo_source.cpp`, produced from the patch) — © Cycling '74, **dual-licensed** under the *Cycling '74 License for Max-Generated Code for Export* or **GPLv3**. Free for non-commercial, educational, and creative use; commercial distribution is granted free of charge to entities under \$200k annual revenue/funding (above that, contact Cycling '74). Open-source distribution like this one is expressly permitted.
